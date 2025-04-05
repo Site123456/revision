@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thèmes</title>
+    <title>Philo</title>
     
    <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -14,382 +14,24 @@
 <!-- Boxicons -->
 <link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
 
-<style>
-:root {
-    --primary-color: #3a86ff;       /* Subtle blue for accents only */
-    --primary-hover: #5fa8ff;
-    --bg-color: #000000;            /* True black */
-    --card-bg: #0d0d0d;             /* Slightly lifted black */
-    --secondary-color: #1d1d1d;        /* For boxes or callouts */
-    --text-color: #d1d1d1;          /* Soft light gray */
-    --muted-text: #888888;
-    --border-color: #1a1a1a;
-    --shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-    --radius: 4px;
-    --transition: all 0.3s ease;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-}
-
-.fiche {
-    max-width: 900px;
-    margin: 60px auto;
-    padding: 40px;
-    background-color: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-}
-
-.fiche-header {
-    text-align: center;
-    margin-bottom: 32px;
-}
-
-.fiche-header h1 {
-    font-size: 2.2rem;
-    font-weight: 600;
-    color: var(--text-color);
-}
-
-.fiche-header p {
-    font-size: 1rem;
-    color: var(--muted-text);
-    margin-top: 8px;
-}
-
-.section-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-top: 40px;
-    margin-bottom: 14px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 4px;
-}
-
-.highlight {
-    background-color: #1a1a1a;
-    color: var(--primary-color);
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-weight: 500;
-}
-
-.info-point {
-    background-color: var(--secondary-color);
-    border-left: 6px solid var(--primary-color);
-    padding: 18px 22px;
-    border-radius: var(--radius);
-    font-size: 1rem;
-    margin: 24px 0;
-    color: var(--text-color);
-}
-
-.author-card {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 48px;
-    padding: 20px;
-    background-color: var(--secondary-color);
-    border-radius: var(--radius);
-    border: 1px solid var(--border-color);
-}
-
-.author-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid var(--border-color);
-}
-
-.author-info h4 {
-    font-size: 1.05rem;
-    color: var(--text-color);
-    margin: 0 0 6px 0;
-}
-
-.author-info p {
-    margin: 0;
-    color: var(--muted-text);
-    font-size: 0.95rem;
-}
-
-.icon-container {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-top: 36px;
-}
-
-.icon-container i {
-    font-size: 26px;
-    color: var(--muted-text);
-    transition: var(--transition);
-}
-
-.icon-container i:hover {
-    color: var(--primary-color);
-    transform: scale(1.1);
-    cursor: pointer;
-}
-
-.fiche-footer {
-    margin-top: 50px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--muted-text);
-}
-
-#reading-time {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background-color: var(--secondary-color);
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 0.85rem;
-    color: #fff;
-    box-shadow: var(--shadow);
-}
-
-#prevfiche, #nextfiche {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 26px;
-    color: var(--text-color);
-    background-color: var(--secondary-color);
-    padding: 12px;
-    border-radius: 50%;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    cursor: pointer;
-}
-
-#nextfiche {
-    right: 80px;
-}
-
-#prevfiche:hover,
-#nextfiche:hover {
-    background-color: var(--primary-color);
-    color: #fff;
-    transform: scale(1.1);
-}
-
-#activefichedetails {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    font-size: 0.8rem;
-    color: var(--text-color);
-    background-color: var(--secondary-color);
-    padding: 10px 12px;
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-}
-
-.lead {
-    font-size: 0.9rem;
-    color: var(--muted-text);
-    margin-bottom: 24px;
-}
-
-#scroll-progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    width: 0;
-    background-color: var(--primary-color);
-    z-index: 9999;
-    transition: width 0.3s ease;
-}
-#fullscreen {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    font-size: 26px;
-    color: var(--text-color);
-    background-color: var(--secondary-color);
-    padding: 12px;
-    border-radius: 50%;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    cursor: pointer;
-}
-#print {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    font-size: 26px;
-    color: var(--text-color);
-    background-color: var(--secondary-color);
-    padding: 12px;
-    border-radius: 50%;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    cursor: pointer;
-}
-
-#print:hover, #fullscreen:hover {
-    background-color: var(--primary-color);
-    color: #fff;
-    transform: scale(1.1);
-}
-#linkurl {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 0.8rem;
-    color: var(--text-color);
-    background-color: var(--secondary-color);
-    padding: 10px 12px;
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-}
-#linkurl a {
-    color: var(--text-color);
-    text-decoration: none;
-    font-weight: 600;
-    margin: 0 4px;
-}
-#linkurl a:hover {
-    color: var(--primary-color);
-}
-/* Responsive */
-@media (max-width: 768px) {
-    .fiche {
-        margin: 20px;
-        padding: 24px;
-    }
-
-    .author-card {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .author-card img {
-        margin-bottom: 10px;
-    }
-
-    .icon-container {
-        flex-wrap: wrap;
-        gap: 18px;
-    }
-}
-
-@media print {
-    body {
-        background: white !important;
-        color: black !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-
-    .fiche {
-        background: white !important;
-        color: black !important;
-        border: 1px solid #ccc !important;
-        box-shadow: none !important;
-        padding: 24px !important;
-        margin: 0 auto !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        break-before: auto !important;
-        break-after: auto !important;
-    }
-
-    .fiche + .fiche {
-        page-break-before: always !important;
-    }
-
-    .author-card,
-    .info-point {
-        background: white !important;
-        color: black !important;
-        border: 1px solid #ccc !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-    }
-
-    .fiche-header h1,
-    .section-title,
-    .highlight,
-    .info-point,
-    .author-info h4 {
-        color: black !important;
-    }
-
-    .highlight {
-        background-color: #fffacc !important;
-        color: #333 !important;
-    }
-
-    .info-point {
-        background-color: #f0f0f0 !important;
-        border-left: 4px solid #999 !important;
-        color: black !important;
-    }
-
-    .icon-container,
-    #reading-time,
-    #prevfiche,
-    #nextfiche,
-    #activefichedetails,
-    #scroll-progress-bar,
-    #fullscreen,
-    #print,
-    .bx,
-    .icon-container i {
-        display: none !important;
-    }
-
-    .fiche-footer {
-        color: #666 !important;
-    }
-
-    a {
-        color: black !important;
-        text-decoration: none !important;
-    }
-
-    img {
-        max-width: 100% !important;
-        height: auto !important;
-    }
-}
-
-
-</style>
+<link rel="stylesheet" id="theme-style" href="./light.css">
 
 </head>
 <body id="fiche-content">
     <div id="scroll-progress-bar" class="bx"></div>
     <div id="reading-time" class="bx mb-3"></div>
     <div id="print" class="bx bx-printer"></div>
-    <div id="fullscreen" class="bx bx-fullscreen"></div>
+    <div id="theme-toggle" class="bx bx-sun"></div>
     <div id="prevfiche" class="bx bx-chevron-up"></div>
     <div id="nextfiche" class="bx bx-chevron-down"></div>
     <div id="activefichedetails" class="bx bx-file"></div>
-    <div class="bx" id="linkurl"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./">Physique Chimie</a></div>
+    <div class="bx" id="linkurl"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div>
+    <div class="bx m-5"></div>
+    <h1 class="bx text-center w-100">Philosophie</h1>
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>La Conscience</h1>
+            <h3>La Conscience</h3>
             <p class="lead">Exploration du concept de conscience à travers la philosophie.</p>
         </div>
 
@@ -447,7 +89,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>L'inconscient</h1>
+            <h3>L'inconscient</h3>
             <p class="lead">Exploration du concept d'inconscient dans la philosophie et la psychanalyse.</p>
         </div>
 
@@ -510,7 +152,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>La Technique</h1>
+            <h3>La Technique</h3>
             <p class="lead">Exploration du rôle de la technique dans la philosophie contemporaine.</p>
         </div>
 
@@ -569,7 +211,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>L'Art</h1>
+            <h3>L'Art</h3>
             <p class="lead">Exploration du concept de l'art à travers les siècles et ses implications philosophiques.</p>
         </div>
 
@@ -644,7 +286,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>Le Travail</h1>
+            <h3>Le Travail</h3>
             <p class="lead">Une exploration du travail dans la philosophie, ses implications éthiques, sociales et politiques.</p>
         </div>
 
@@ -711,7 +353,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>La Nature</h1>
+            <h3>La Nature</h3>
             <p class="lead">Une exploration philosophique de la nature, ses implications éthiques, esthétiques et métaphysiques.</p>
         </div>
 
@@ -786,7 +428,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>La Culture</h1>
+            <h3>La Culture</h3>
             <p class="lead">Une exploration philosophique de la culture, ses implications sociales, esthétiques et anthropologiques.</p>
         </div>
 
@@ -861,7 +503,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>La Religion</h1>
+            <h3>La Religion</h3>
             <p class="lead">Une exploration philosophique de la religion, ses implications métaphysiques, morales et sociales.</p>
         </div>
 
@@ -936,7 +578,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>L'État</h1>
+            <h3>L'État</h3>
             <p class="lead">Une exploration philosophique de l'État, ses origines, sa légitimité et son rôle dans la société humaine.</p>
         </div>
 
@@ -1011,7 +653,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>Le Bonheur</h1>
+            <h3>Le Bonheur</h3>
             <p class="lead">Une exploration philosophique du bonheur, ses significations, ses implications morales et éthiques.</p>
         </div>
 
@@ -1086,7 +728,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>La Liberté</h1>
+            <h3>La Liberté</h3>
             <p class="lead">Une exploration philosophique de la liberté, ses significations, ses implications morales et sociales.</p>
         </div>
 
@@ -1162,7 +804,7 @@ body {
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
-            <h1>Le Droit</h1>
+            <h3>Le Droit</h3>
             <p class="lead">Une exploration philosophique du droit, ses fondements, sa relation avec la justice et ses implications sociales et morales.</p>
         </div>
 
@@ -1244,7 +886,7 @@ body {
     </div>
     <div class="bx container-fluid">
         <div class="fiche-header">
-            <p class="lead">Ceci est un fiche fait pour la revision de philo</p>
+            <p class="lead">Ceci est un fiche fait pour la revision de Philosophie!</p>
     </div>
     <script>
         function estimateReadingTime(containerId, displayId) {
@@ -1267,81 +909,7 @@ body {
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    $(document).ready(function () {
-        const $fiches = $(".fiche");
-    
-        function setActiveFiche($fiche) {
-            $fiches.removeClass("active");
-            if ($fiche && $fiche.length) {
-                $fiche.addClass("active");
-            }
-            document.title = $fiche.find("h1").text() + " - Philosophie";
-            var estimatedcurrentfichereadtime = Math.ceil($fiche.text().trim().split(/\s+/).length / 60);
-            document.getElementById("activefichedetails").innerHTML = " " + $fiche.find("h1").text() + " - " + estimatedcurrentfichereadtime + " min";
-        }
-    
-        // Set first fiche as active if none
-        if ($(".fiche.active").length === 0 && $fiches.length > 0) {
-            setActiveFiche($fiches.first());
-        }
-    
-        function scrollToFiche($fiche) {
-            if ($fiche && $fiche.length) {
-                $("html, body").animate({
-                    scrollTop: $fiche.offset().top + 20 // adjust as needed
-                }, 60);
-            }
-        }
-    
-        $("#prevfiche").on("click", function () {
-            const $current = $(".fiche.active");
-            const $prev = $current.prevAll(".fiche").first();
-            if ($prev.length) {
-                setActiveFiche($prev);
-                scrollToFiche($prev);
-            }
-        });
-    
-        $("#nextfiche").on("click", function () {
-            const $current = $(".fiche.active");
-            const $next = $current.nextAll(".fiche").first();
-            if ($next.length) {
-                setActiveFiche($next);
-                scrollToFiche($next);
-            }
-        });
-    
-        $(window).on("scroll", function () {
-            const scrollTop = $(this).scrollTop();
-            let docHeight = $(document).height();
-            let winHeight = $(window).height();
-            let scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
-            $("#scroll-progress-bar").css("width", scrollPercent + "%");
-
-            $fiches.each(function () {
-                const $fiche = $(this);
-                const offsetTop = $fiche.offset().top;
-                const offsetBottom = offsetTop + $fiche.outerHeight();
-    
-                if (scrollTop >= offsetTop - 20 && scrollTop < offsetBottom - 20) {
-                    setActiveFiche($fiche);
-                    return false; // break loop once active one is found
-                }
-            });
-        });
-    });
-    document.getElementById("fullscreen").addEventListener("click", function () {
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-        } else {
-            document.documentElement.requestFullscreen();
-        }
-    });
-    document.getElementById("print").addEventListener("click", function () {
-        window.print();
-    });
-    </script>
+    <script src="./script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
