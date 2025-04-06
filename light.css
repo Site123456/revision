@@ -1,18 +1,16 @@
 :root {
-    --primary-color: #3a86ff;       /* Accent blue */
-    --primary-hover: #1f64e0;
+    --primary-color: #3a86ff;       /* Subtle blue for accents only */
+    --primary-hover: #5fa8ff;
     --bg-color: #ffffff;            /* White background */
-    --card-bg: #f8f9fa;             /* Light gray for cards */
-    --secondary-color: #f1f3f5;     /* Subtle secondary background */
-    --text-color: #212529;          /* Dark text */
-    --muted-text: #6c757d;
-    --border-color: #dee2e6;
-    --shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --card-bg: #f6f9ff;             /* Light gray for card backgrounds */
+    --secondary-color: #f7f7f7;     /* Light gray for boxes or callouts */
+    --text-color: #333333;          /* Dark gray text color */
+    --muted-text: #888888;
+    --border-color: #d0d0d0;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.1);  /* Lighter shadow */
     --radius: 4px;
     --transition: all 0.3s ease;
 }
-
-/* All other styles remain unchanged except where variables apply */
 
 body {
     font-family: 'Inter', sans-serif;
@@ -62,7 +60,7 @@ body {
 }
 
 .highlight {
-    background-color: #e9e9ff;
+    background-color: #f7f7f7;
     color: var(--primary-color);
     padding: 4px 8px;
     border-radius: 5px;
@@ -144,7 +142,7 @@ body {
     padding: 10px 14px;
     border-radius: 10px;
     font-size: 0.85rem;
-    color: var(--text-color);
+    color: #333;
     box-shadow: var(--shadow);
 }
 
@@ -202,6 +200,7 @@ body {
     z-index: 9999;
     transition: width 0.3s ease;
 }
+
 #theme-toggle {
     position: fixed;
     top: 20px;
@@ -215,6 +214,7 @@ body {
     transition: var(--transition);
     cursor: pointer;
 }
+
 #print {
     position: fixed;
     top: 80px;
@@ -229,11 +229,30 @@ body {
     cursor: pointer;
 }
 
+#prevspeachtext {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    font-size: 14px;
+    color: var(--text-color);
+    background-color: var(--secondary-color);
+    padding: 8px;
+    max-width: calc(100% - 220px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
 #print:hover, #theme-toggle:hover {
     background-color: var(--primary-color);
     color: #fff;
     transform: scale(1.1);
 }
+
 #linkurl {
     position: fixed;
     top: 20px;
@@ -246,15 +265,18 @@ body {
     box-shadow: var(--shadow);
     cursor: pointer;
 }
+
 #linkurl a {
     color: var(--text-color);
     text-decoration: none;
     font-weight: 600;
     margin: 0 4px;
 }
+
 #linkurl a:hover {
     color: var(--primary-color);
 }
+
 .m-5 {
     margin: 30px !important;
 }
@@ -283,9 +305,6 @@ body {
         margin: 100px !important;
     }
 }
-
-/* Print styles are already adapted for light mode */
-
 
 @media print {
     body {

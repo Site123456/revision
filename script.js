@@ -1,70 +1,81 @@
+
+$('#prevspeachtext').hide('');
 function getBestVoice(language) {
     const voices = window.speechSynthesis.getVoices();
-    // Attempt to find a voice based on the language (French)
     const voice = voices.find(v => v.lang === language && v.name.toLowerCase().includes('google'));
-    
+
     // If no good voice found, fall back to a default French voice
     if (voice) {
-      return voice;
+        return voice;
     }
-    
-    // If no Google voice, try any French voice as fallback
+
     return voices.find(v => v.lang === language) || null;
 }
 
 $('#readaloud').click(function() {
     const textElement = $('.fiche.active'); // Get the active text element
     var text = textElement.text();
-    text = text.replace(/['"]/g, '');
+    $('#prevspeachtext').show('');
     
     if (text !== "") {
-      const speech = new SpeechSynthesisUtterance();
-      speech.text = text;
-      
-      // Set language to French
-      speech.lang = 'fr-FR'; // French (France) - You can try 'fr-CA' for Canadian French or others if needed.
-      
-      const voice = getBestVoice('fr-FR'); // Adjust language as needed
-      if (voice) {
-        speech.voice = voice; // Use the selected voice
-      }
-      speech.rate = 1.2; // Adjust the rate of speech (1 is normal speed)
-      speech.pitch = 1.4;
-        $('#prevspeachtext').text(text); // Clear previous text
-        var words = text.split(' '); // Split the text into words
-        let currentWordIndex = 0; // Initialize current word index
+        const sentences = text.split(/[.?!]/); // Split the text into sentences based on punctuation marks
+        let sentenceIndex = 0; // Start at the first sentence
 
-        // Function to highlight text
-        const highlightText = () => {
-            $('#prevspeachtext').empty(); // Clear the previous highlighted text
-            // Loop through the words starting from the current word index
-            words.slice(currentWordIndex).forEach((word, index) => {
-                const span = $('<span>').text(word + ' ');
-                if (index === 0) {
-                    span.addClass('highlight'); // Add a CSS class to the current word
+        // Calculate the number of words in the text
+        const wordCount = text.split(/\s+/).length;
+        
+        // Estimate the reading time
+        const wordsPerMinute = 150; // Standard reading speed (adjustable)
+        const readingTimeInMinutes = wordCount / wordsPerMinute;
+        const readingTimeInSeconds = Math.round(readingTimeInMinutes * 60);
+
+        // Display the estimated reading time
+        $('#reading-time').text(`Lecture auto: ${readingTimeInSeconds} seconds`);
+
+        // Function to speak the next sentence
+        function speakNextSentence() {
+            if (sentenceIndex < sentences.length) {
+                const sentence = sentences[sentenceIndex].trim();
+                if (sentence) {
+                    const speech = new SpeechSynthesisUtterance();
+                    speech.text = sentence + "."; // Add the punctuation mark back for proper tone
+                    speech.lang = 'fr-FR'; // Set language to French
+                    
+                    const voice = getBestVoice('fr-FR'); // Adjust language as needed
+                    if (voice) {
+                        speech.voice = voice; // Use the selected voice
+                    }
+
+                    // Natural Speech Settings
+                    speech.rate = 0.9; // Slightly slower rate
+                    speech.pitch = 1.2; // A slightly higher pitch for a softer tone
+                    speech.volume = 0.9; // Volume level
+
+                    // Clear #prevspeachtext and rebuild it with the current sentence
+                    $('#prevspeachtext').empty(); // Remove any previous content
+                    const span = $('<span>').text(sentence + '.'); // Add the current sentence wrapped in span
+                    span.addClass('highlight'); // Add the highlight class to the current sentence
+                    $('#prevspeachtext').append(span); // Add the highlighted sentence
+
+                    // Once the speech ends, move to the next sentence
+                    speech.onend = function() {
+                        sentenceIndex++;
+                        speakNextSentence(); // Recursively speak the next sentence
+                    };
+
+                    // Start speaking the current sentence
+                    window.speechSynthesis.speak(speech);
                 }
-                $('#prevspeachtext').append(span); // Append the word to the element
-            });
-        };
-
-        // Set the event for word boundaries
-        speech.onboundary = function(event) {
-            if (event.name === 'word') {
-                currentWordIndex = words.indexOf(event.char); // Find the index of the word being spoken
-                highlightText(); // Call the highlightText function to update the display
+            } else {
+                $('#prevspeachtext').hide('');
+                estimateReadingTime('fiche-content', 'reading-time');
             }
-        };
+        }
 
-
-      speech.onend = function() {
-        // Optionally restore the text or update it after reading finishes
-        $('#currently-reading').text('Finished reading the text');
-        };
-      // Start reading the text aloud in French
-      window.speechSynthesis.speak(speech);
-      
+        // Start reading the first sentence
+        speakNextSentence();
     } else {
-      alert('Please enter some text!');
+        alert('Please enter some text!');
     }
 });
 
@@ -165,4 +176,23 @@ $(document).ready(function () {
 });
 document.getElementById("print").addEventListener("click", function () {
     window.print();
+});
+
+function estimateReadingTime(containerId, displayId) {
+    const container = document.getElementById(containerId);
+    const display = document.getElementById(displayId);
+    const wordsPerMinute = 60;
+
+    if (container) {
+        const text = container.innerText || container.textContent;
+        const wordCount = text.trim().split(/\s+/).length;
+        const minutes = Math.ceil(wordCount / wordsPerMinute);
+        
+        display.textContent = `⏱️ Estimation: ${minutes} min`;
+    }
+}
+
+// Run on page load
+window.addEventListener('DOMContentLoaded', () => {
+    estimateReadingTime('fiche-content', 'reading-time');
 });

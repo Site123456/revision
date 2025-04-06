@@ -40,7 +40,7 @@ cursor: pointer;
     <div id="nextfiche" class="bx bx-chevron-down"></div>
     <div id="activefichedetails" class="bx bx-file"></div>
     <div id="readaloud" class="bx bx-book-reader"></div>
-    <div id="prevspeachtext" class="bx">prevspeachtext</div>
+    <div id="prevspeachtext" class="bx"></div>
     <div class="bx" id="linkurl"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div>
     <div class="bx m-5"></div>
     <h1 class="bx text-center w-100">Philosophie</h1>
@@ -904,26 +904,6 @@ cursor: pointer;
         <div class="fiche-header">
             <p class="lead">Ceci est un fiche fait pour la revision de Philosophie!</p>
     </div>
-    <script>
-        function estimateReadingTime(containerId, displayId) {
-            const container = document.getElementById(containerId);
-            const display = document.getElementById(displayId);
-            const wordsPerMinute = 60;
-    
-            if (container) {
-                const text = container.innerText || container.textContent;
-                const wordCount = text.trim().split(/\s+/).length;
-                const minutes = Math.ceil(wordCount / wordsPerMinute);
-                
-                display.textContent = `⏱️ Estimation: ${minutes} min`;
-            }
-        }
-    
-        // Run on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            estimateReadingTime('fiche-content', 'reading-time');
-        });
-    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="./script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
