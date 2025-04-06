@@ -29,6 +29,7 @@ $('#readaloud').click(function() {
         speech.voice = voice; // Use the selected voice
       }
       speech.rate = 1.2; // Adjust the rate of speech (1 is normal speed)
+      speech.pitch = 1.4;
         $('#prevspeachtext').text(text); // Clear previous text
         var words = text.split(' '); // Split the text into words
         let currentWordIndex = 0; // Initialize current word index
