@@ -14,7 +14,7 @@ function getBestVoice(language) {
 
 $('#readaloud').click(function() {
     const textElement = $('.fiche.active'); // Get the active text element
-    const text = textElement.text();
+    var text = textElement.text();
     text = text.replace(/['"]/g, '');
     
     if (text !== "") {
