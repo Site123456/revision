@@ -11,7 +11,6 @@ function getBestVoice(language) {
 
     return voices.find(v => v.lang === language) || null;
 }
-
 $('#readaloud').click(function() {
     const textElement = $('.fiche.active'); // Get the active text element
     var text = textElement.text();
@@ -57,6 +56,33 @@ $('#readaloud').click(function() {
                     span.addClass('highlight'); // Add the highlight class to the current sentence
                     $('#prevspeachtext').append(span); // Add the highlighted sentence
 
+                    // Now scroll the page so the corresponding sentence in .fiche is 100px from the top
+                    const highlightedText = $('#prevspeachtext span.highlight').text().trim(); // Get the highlighted sentence text
+                    const ficheElement = $('.fiche.active');
+
+                    // Find the matching sentence in the .fiche.active content
+                    const matchingSentenceElement = ficheElement.find('p, div, span').filter(function() {
+                        return $(this).text().trim() === highlightedText;
+                    });
+
+                    // If no exact match is found, find the closest match based on common words
+                    let sentenceToScroll = null;
+                    if (matchingSentenceElement.length > 0) {
+                        sentenceToScroll = matchingSentenceElement;
+                    } else {
+                        // Fuzzy matching: Find the most similar sentence based on common words
+                        sentenceToScroll = findMostResemblingSentence(ficheElement, highlightedText);
+                    }
+
+                    // Scroll to the found sentence
+                    if (sentenceToScroll) {
+                        const elementOffsetTop = sentenceToScroll.offset().top;
+                        const scrollToPosition = elementOffsetTop - 100; // Scroll 100px from the top of the screen
+
+                        // Animate the scroll to the calculated position for the body
+                        $('html, body').animate({ scrollTop: scrollToPosition }, 300);
+                    }
+
                     // Once the speech ends, move to the next sentence
                     speech.onend = function() {
                         sentenceIndex++;
@@ -67,8 +93,7 @@ $('#readaloud').click(function() {
                     window.speechSynthesis.speak(speech);
                 }
             } else {
-                $('#prevspeachtext').hide('');
-                estimateReadingTime('fiche-content', 'reading-time');
+                $('#prevspeachtext').hide(''); // Optionally update UI after all text is read
             }
         }
 
@@ -78,6 +103,44 @@ $('#readaloud').click(function() {
         alert('Please enter some text!');
     }
 });
+
+// Function to find the most resembling sentence in .fiche.active based on common words
+function findMostResemblingSentence(ficheElement, highlightedText) {
+    let bestMatch = null;
+    let highestSimilarity = 0;
+
+    // Convert the highlighted sentence into a set of words (split by spaces)
+    const highlightedWords = new Set(highlightedText.split(/\s+/).map(word => word.toLowerCase()));
+
+    ficheElement.find('p, div, span').each(function() {
+        const currentSentence = $(this).text().trim();
+        const currentWords = new Set(currentSentence.split(/\s+/).map(word => word.toLowerCase()));
+
+        // Calculate the intersection (common words) between highlighted sentence and current sentence
+        const commonWords = getCommonWords(highlightedWords, currentWords);
+
+        // If the current sentence has more common words, it's a better match
+        if (commonWords.length > highestSimilarity) {
+            highestSimilarity = commonWords.length;
+            bestMatch = $(this);
+        }
+    });
+
+    return bestMatch;
+}
+
+// Function to get the common words between two sets
+function getCommonWords(set1, set2) {
+    const commonWords = [];
+    set1.forEach(word => {
+        if (set2.has(word)) {
+            commonWords.push(word);
+        }
+    });
+    return commonWords;
+}
+
+
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
