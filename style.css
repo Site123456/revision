@@ -228,6 +228,24 @@ body {
     cursor: pointer;
 }
 
+#prevspeachtext {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    font-size: 14px;
+    color: var(--text-color);
+    background-color: var(--secondary-color);
+    padding: 8px;
+    max-width: calc(100% - 220px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
 #print:hover, #theme-toggle:hover {
     background-color: var(--primary-color);
     color: #fff;
