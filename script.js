@@ -11,6 +11,50 @@ function getBestVoice(language) {
 
     return voices.find(v => v.lang === language) || null;
 }
+document.querySelectorAll('a[href^="#fiche"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+        $("#search").val(''); // Clear the search input
+        $('.fiche').show(); // Show all cards
+        e.preventDefault();
+        setTimeout(() => {
+            const targetNumber = this.getAttribute("href").replace("#fiche", "");
+            const targetElement = document.querySelectorAll(".fiche")[targetNumber - 1];
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+                });
+            }
+        }, 600); // Delay to allow for smooth scrolling
+    });
+  });
+  document.querySelectorAll('.slider-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = item.getAttribute('href');
+        document.querySelector(targetId).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+const searchInput = document.getElementById('search');
+const cards = document.getElementsByClassName('fiche');
+
+searchInput.addEventListener('input', function() {
+  const searchText = searchInput.value.trim().toLowerCase(); // Récupère le texte de recherche en minuscule
+
+  for (let card of cards) {
+    const cardText = card.textContent.toLowerCase(); // Récupère le texte de chaque carte en minuscule
+
+    // Si le texte de la carte contient une correspondance partielle du texte de recherche
+    if (cardText.includes(searchText)) {
+      card.style.display = 'block'; // Affiche la carte si correspondance trouvée
+    } else {
+      card.style.display = 'none'; // Cache la carte sinon
+    }
+  }
+});
+
 $('#readaloud').click(function() {
     const textElement = $('.fiche.active'); // Get the active text element
     var text = textElement.text();
@@ -30,10 +74,10 @@ $('#readaloud').click(function() {
 
         // Display the estimated reading time
         $('#reading-time').text(`Lecture auto: ${readingTimeInSeconds} seconds`);
-
+        
         // Function to speak the next sentence
         function speakNextSentence() {
-            if (sentenceIndex < sentences.length) {
+            if (sentenceIndex < sentences.length -1) {
                 const sentence = sentences[sentenceIndex].trim();
                 if (sentence) {
                     const speech = new SpeechSynthesisUtterance();
@@ -46,8 +90,8 @@ $('#readaloud').click(function() {
                     }
 
                     // Natural Speech Settings
-                    speech.rate = 0.9; // Slightly slower rate
-                    speech.pitch = 1.2; // A slightly higher pitch for a softer tone
+                    speech.rate = 1.1; // Slightly slower rate
+                    speech.pitch = 1.4; // A slightly higher pitch for a softer tone
                     speech.volume = 0.9; // Volume level
 
                     // Clear #prevspeachtext and rebuild it with the current sentence
@@ -94,13 +138,14 @@ $('#readaloud').click(function() {
                 }
             } else {
                 $('#prevspeachtext').hide(''); // Optionally update UI after all text is read
+                estimateReadingTime('fiche-content', 'reading-time');
             }
         }
 
         // Start reading the first sentence
         speakNextSentence();
     } else {
-        alert('Please enter some text!');
+        alert('Erreur de lecture!');
     }
 });
 
