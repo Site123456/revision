@@ -1,1013 +1,306 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Philo</title>
+
+$('#prevspeachtext').hide('');
+function getBestVoice(language) {
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang === language && v.name.toLowerCase().includes('google'));
+
+    // If no good voice found, fall back to a default French voice
+    if (voice) {
+        return voice;
+    }
+
+    return voices.find(v => v.lang === language) || null;
+}
+document.querySelectorAll('a[href^="#fiche"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+        $("#search").val(''); // Clear the search input
+        $('.fiche').show(); // Show all cards
+        e.preventDefault();
+        setTimeout(() => {
+            const targetNumber = this.getAttribute("href").replace("#fiche", "");
+            const targetElement = document.querySelectorAll(".fiche")[targetNumber - 1];
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+                });
+            }
+        }, 600); // Delay to allow for smooth scrolling
+    });
+  });
+  document.querySelectorAll('.slider-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = item.getAttribute('href');
+        document.querySelector(targetId).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+const searchInput = document.getElementById('search');
+const cards = document.getElementsByClassName('fiche');
+
+searchInput.addEventListener('input', function() {
+  const searchText = searchInput.value.trim().toLowerCase(); // Récupère le texte de recherche en minuscule
+
+  for (let card of cards) {
+    const cardText = card.textContent.toLowerCase(); // Récupère le texte de chaque carte en minuscule
+
+    // Si le texte de la carte contient une correspondance partielle du texte de recherche
+    if (cardText.includes(searchText)) {
+      card.style.display = 'block'; // Affiche la carte si correspondance trouvée
+    } else {
+      card.style.display = 'none'; // Cache la carte sinon
+    }
+  }
+});
+
+$('#readaloud').click(function() {
+    const textElement = $('.fiche.active'); // Get the active text element
+    var text = textElement.text();
+    $('#prevspeachtext').show('');
     
-   <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    if (text !== "") {
+        const sentences = text.split(/[.?!]/); // Split the text into sentences based on punctuation marks
+        let sentenceIndex = 0; // Start at the first sentence
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        // Calculate the number of words in the text
+        const wordCount = text.split(/\s+/).length;
+        
+        // Estimate the reading time
+        const wordsPerMinute = 150; // Standard reading speed (adjustable)
+        const readingTimeInMinutes = wordCount / wordsPerMinute;
+        const readingTimeInSeconds = Math.round(readingTimeInMinutes * 60);
 
-<!-- Boxicons -->
-<link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
+        // Display the estimated reading time
+        $('#reading-time').text(`Lecture auto: ${readingTimeInSeconds} seconds`);
+        
+        // Function to speak the next sentence
+        function speakNextSentence() {
+            if (sentenceIndex < sentences.length -1) {
+                const sentence = sentences[sentenceIndex].trim();
+                if (sentence) {
+                    const speech = new SpeechSynthesisUtterance();
+                    speech.text = sentence + "."; // Add the punctuation mark back for proper tone
+                    speech.lang = 'fr-FR'; // Set language to French
+                    
+                    const voice = getBestVoice('fr-FR'); // Adjust language as needed
+                    if (voice) {
+                        speech.voice = voice; // Use the selected voice
+                    }
 
-<link rel="stylesheet" id="theme-style" href="./light.css">
-<style>
-#readaloud {
-position: fixed;
-bottom: 130px;
-right: 20px;
-font-size: 26px;
-color: var(--text-color);
-background-color: var(--secondary-color);
-padding: 12px;
-border-radius: 50%;
-box-shadow: var(--shadow);
-transition: var(--transition);
-cursor: pointer;
-}
-.recap {
-width: 100%;
-padding: 20px;
-display: flex;
-justify-content: center;
-align-items: center;
-}
-.recap iframe {
-width: 100%;
-max-width: 600px;
-height: 100%;
-aspect-ratio: 16/9;
-border: none;
-border-radius: 1rem;
-}
-/* Style the container to allow horizontal scrolling */
-.slider-container {
-    width: 100%;
-    overflow-x: auto;              /* Horizontal scrolling */
-    padding: 20px 10px;
-    max-width: 900px;
+                    // Natural Speech Settings
+                    speech.rate = 1.1; // Slightly slower rate
+                    speech.pitch = 1.4; // A slightly higher pitch for a softer tone
+                    speech.volume = 0.9; // Volume level
+
+                    // Clear #prevspeachtext and rebuild it with the current sentence
+                    $('#prevspeachtext').empty(); // Remove any previous content
+                    const span = $('<span>').text(sentence + '.'); // Add the current sentence wrapped in span
+                    span.addClass('highlight'); // Add the highlight class to the current sentence
+                    $('#prevspeachtext').append(span); // Add the highlighted sentence
+
+                    // Now scroll the page so the corresponding sentence in .fiche is 100px from the top
+                    const highlightedText = $('#prevspeachtext span.highlight').text().trim(); // Get the highlighted sentence text
+                    const ficheElement = $('.fiche.active');
+
+                    // Find the matching sentence in the .fiche.active content
+                    const matchingSentenceElement = ficheElement.find('p, div, span').filter(function() {
+                        return $(this).text().trim() === highlightedText;
+                    });
+
+                    // If no exact match is found, find the closest match based on common words
+                    let sentenceToScroll = null;
+                    if (matchingSentenceElement.length > 0) {
+                        sentenceToScroll = matchingSentenceElement;
+                    } else {
+                        // Fuzzy matching: Find the most similar sentence based on common words
+                        sentenceToScroll = findMostResemblingSentence(ficheElement, highlightedText);
+                    }
+
+                    // Scroll to the found sentence
+                    if (sentenceToScroll) {
+                        const elementOffsetTop = sentenceToScroll.offset().top;
+                        const scrollToPosition = elementOffsetTop - 100; // Scroll 100px from the top of the screen
+
+                        // Animate the scroll to the calculated position for the body
+                        $('html, body').animate({ scrollTop: scrollToPosition }, 300);
+                    }
+
+                    // Once the speech ends, move to the next sentence
+                    speech.onend = function() {
+                        sentenceIndex++;
+                        speakNextSentence(); // Recursively speak the next sentence
+                    };
+
+                    // Start speaking the current sentence
+                    window.speechSynthesis.speak(speech);
+                }
+            } else {
+                $('#prevspeachtext').hide(''); // Optionally update UI after all text is read
+                estimateReadingTime('fiche-content', 'reading-time');
+            }
+        }
+
+        // Start reading the first sentence
+        speakNextSentence();
+    } else {
+        alert('Erreur de lecture!');
+    }
+});
+
+// Function to find the most resembling sentence in .fiche.active based on common words
+function findMostResemblingSentence(ficheElement, highlightedText) {
+    let bestMatch = null;
+    let highestSimilarity = 0;
+
+    // Convert the highlighted sentence into a set of words (split by spaces)
+    const highlightedWords = new Set(highlightedText.split(/\s+/).map(word => word.toLowerCase()));
+
+    ficheElement.find('p, div, span').each(function() {
+        const currentSentence = $(this).text().trim();
+        const currentWords = new Set(currentSentence.split(/\s+/).map(word => word.toLowerCase()));
+
+        // Calculate the intersection (common words) between highlighted sentence and current sentence
+        const commonWords = getCommonWords(highlightedWords, currentWords);
+
+        // If the current sentence has more common words, it's a better match
+        if (commonWords.length > highestSimilarity) {
+            highestSimilarity = commonWords.length;
+            bestMatch = $(this);
+        }
+    });
+
+    return bestMatch;
 }
 
-/* Style the slider itself (the content within the container) */
-.slider {
-    display: flex;
-    gap: 20px;                     /* Space between items */
-    padding: 10px 0;
-    flex-wrap: nowrap;
+// Function to get the common words between two sets
+function getCommonWords(set1, set2) {
+    const commonWords = [];
+    set1.forEach(word => {
+        if (set2.has(word)) {
+            commonWords.push(word);
+        }
+    });
+    return commonWords;
 }
 
-/* Style each slider item (link) */
-.slider-item {
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 12px 24px;
-    border-radius: var(--radius);  /* Rounded corners */
-    background-color: var(--card-bg);  /* Light gray background */
-    color: var(--text-color);       /* Dark text color */
-    white-space: nowrap;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
-/* Hover effect for each item */
-.slider-item:hover {
-    background-color: var(--primary-hover);  /* Light blue background on hover */
-    color: var(--bg-color);                  /* White text on hover */
-    transform: translateY(-3px);             /* Slight lift on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Subtle shadow on hover */
-}
 
-/* Active state to give a pressed effect when the item is clicked */
-.slider-item:active {
-    transform: translateY(1px);  /* Slightly pressed effect */
-    box-shadow: none;             /* Remove shadow on click */
-}
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
 
-.search-container {
-display: flex;
-justify-content: center;
+  // Function to set a cookie
+  function setCookie(name, value, days = 365) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+  }
+
+$(document).ready(function () {
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeLink = document.getElementById('theme-style');
+    const savedTheme = getCookie('theme');
+    if (savedTheme === 'light') {
+        themeLink.href = 'light.css';
+        themeToggle.classList.replace('bx-moon', 'bx-sun');
+    }
+    if (savedTheme === 'dark') {
+        themeLink.href = 'style.css';
+        themeToggle.classList.replace('bx-sun', 'bx-moon');
+    }
+    themeToggle.addEventListener('click', () => {
+        const isDark = themeLink.href.includes('style.css');
+        const newTheme = isDark ? 'light' : 'dark';
+
+        themeLink.href = isDark ? 'light.css' : 'style.css';
+        themeToggle.classList.toggle('bx-sun');
+        themeToggle.classList.toggle('bx-moon');
+        setCookie('theme', newTheme);
+    });
+    const $fiches = $(".fiche");
+
+    function setActiveFiche($fiche) {
+        $fiches.removeClass("active");
+        if ($fiche && $fiche.length) {
+            $fiche.addClass("active");
+        }
+        document.title = $fiche.find("h3").text() + " - Philosophie";
+        var estimatedcurrentfichereadtime = Math.ceil($fiche.text().trim().split(/\s+/).length / 60);
+        document.getElementById("activefichedetails").innerHTML = " " + $fiche.find("h3").text() + " - " + estimatedcurrentfichereadtime + " min";
     }
 
-    .search-bar {
-        padding: 10px;
-        width: 250px;
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius);
-        outline: none;
-        transition: var(--transition);
+    // Set first fiche as active if none
+    if ($(".fiche.active").length === 0 && $fiches.length > 0) {
+        setActiveFiche($fiches.first());
     }
 
-    .search-bar:focus {
-        border-color: var(--primary-color);
+    function scrollToFiche($fiche) {
+        if ($fiche && $fiche.length) {
+            $("html, body").animate({
+                scrollTop: $fiche.offset().top + 20 // adjust as needed
+            }, 60);
+        }
     }
-@media print {.recap {display: none;}}
-</style>
-</head>
-<body id="fiche-content">
-    <div id="scroll-progress-bar" class="bx"></div>
-    <div id="reading-time" class="bx mb-3"></div>
-    <div id="print" class="bx bx-printer"></div>
-    <div id="theme-toggle" class="bx bx-sun"></div>
-    <div id="prevfiche" class="bx bx-chevron-up"></div>
-    <div id="nextfiche" class="bx bx-chevron-down"></div>
-    <div id="activefichedetails" class="bx bx-file"></div>
-    <div id="readaloud" class="bx bx-user-voice"></div>
-    <div id="prevspeachtext" class="bx"></div>
-    <div class="bx" id="linkurl"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div>
-    <div class="bx m-5"></div>
-    <h1 class="bx text-center w-100">Philosophie</h1>
-    <div class="search-container bx p-2">
-        <input class="search-bar" type="text" id="search" placeholder="Chercher la fiche...">
-    </div>
-    <div class="bx w-100 d-flex justify-content-center align-items-center">
-        <div class="slider-container">
-            <div class="slider">
-                <a href="#fiche1" class="slider-item">La Conscience</a>
-                <a href="#fiche2" class="slider-item">l'Inconscient</a>
-                <a href="#fiche3" class="slider-item">la Technique</a>
-                <a href="#fiche4" class="slider-item">l'Art</a>
-                <a href="#fiche5" class="slider-item">le Travail</a>
-                <a href="#fiche6" class="slider-item">la Nature</a>
-                <a href="#fiche7" class="slider-item">la Culture</a>
-                <a href="#fiche8" class="slider-item">la Religion</a>
-                <a href="#fiche9" class="slider-item">l'Etat</a>
-                <a href="#fiche10" class="slider-item">le Bonheur</a>
-                <a href="#fiche11" class="slider-item">la liberté</a>
-                <a href="#fiche12" class="slider-item">le Droit</a>
-            </div>
-        </div>
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>La Conscience</h3>
-            <p class="lead">Exploration du concept de conscience à travers la philosophie.</p>
-        </div>
-        <!-- Section 1: Introduction à la Conscience -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que la Conscience ?</h2>
-            <p>La conscience est souvent définie comme l'état de perception de soi et de son environnement. C'est la faculté qui permet à l'individu de prendre conscience de ses pensées, de ses émotions, de son corps et du monde extérieur.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Selon Descartes, la conscience est au cœur de la réflexion. Pour lui, le fait de douter est une preuve de l'existence de la conscience: "Cogito, ergo sum" ("Je pense, donc je suis").
-            </div>
-        </div>
-        <div class="recap"><iframe src="https://www.youtube.com/embed/pkeQzlskbwI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
 
-        <!-- Section 2: Conscience et Philosophie Moderne -->
-        <div>
-            <h2 class="section-title">Conscience et Philosophie Moderne</h2>
-            <p>Les philosophes modernes ont exploré la conscience sous différents angles. Descartes, avec son dualisme, a séparé la conscience de l'âme. Hume, quant à lui, a mis en doute l'existence d'un "soi" permanent, en considérant que la conscience est un flux d'idées sans unité stable.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de la Conscience -->
-        <h2 class="section-title">Auteurs Célèbres et la Conscience</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="René Descartes">
-            <div class="author-info">
-                <h4>René Descartes</h4>
-                <p><strong>Vision :</strong> Descartes a placé la conscience au centre de sa réflexion. Pour lui, la conscience est la preuve même de l'existence, et il a formulé sa célèbre maxime "Je pense, donc je suis" pour illustrer cette idée.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="David Hume">
-            <div class="author-info">
-                <h4>David Hume</h4>
-                <p><strong>Vision :</strong> Hume a défendu l'idée que la conscience n'est pas un "soi" stable, mais un flot d'impressions et d'idées. Il a suggéré que nous n'avons qu'une perception fugace de nous-mêmes à travers nos pensées et sensations.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Jean-Paul Sartre">
-            <div class="author-info">
-                <h4>Jean-Paul Sartre</h4>
-                <p><strong>Vision :</strong> Sartre, existentialiste, a soutenu que la conscience est radicalement libre. Il a formulé l'idée que l'existence précède l'essence, et que nous sommes responsables de la création de notre propre essence à travers nos choix.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: Conscience et Science -->
-        <div>
-            <h2 class="section-title">La Conscience et la Science</h2>
-            <p>La conscience est également un sujet central dans les débats modernes sur la neuroscience et la psychologie. Les scientifiques s'intéressent à la manière dont le cerveau produit la conscience, mais certains philosophes restent sceptiques face à une explication purement biologique de la conscience.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Le problème de la conscience reste l'un des plus grands mystères en philosophie et en science. Comment la matière (le cerveau) peut-elle produire des expériences subjectives et des sensations ? C'est la question du "problème difficile" de la conscience, soulevée par le philosophe David Chalmers.
-            </div>
-        </div>
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>L'inconscient</h3>
-            <p class="lead">Exploration du concept d'inconscient dans la philosophie et la psychanalyse.</p>
-        </div>
-
-        <!-- Section 1: Introduction à l'inconscient -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que l'inconscient ?</h2>
-            <p>L'inconscient désigne une partie de l'esprit humain qui échappe à la conscience immédiate. Il englobe des pensées, des souvenirs, des désirs et des instincts qui sont refoulés, mais qui influencent néanmoins nos comportements et nos émotions. Ce concept est essentiel à la psychanalyse, notamment avec Freud.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Selon Freud, l'inconscient se manifeste dans nos rêves, nos lapsus, et nos actes manqués, qui sont des indices de pensées refoulées.
-            </div>
-        </div>
-
-        <!-- Section 2: L'inconscient et la Psychanalyse -->
-        <div>
-            <h2 class="section-title">L'inconscient et la Psychanalyse</h2>
-            <p>Freud est le premier à avoir théorisé l'inconscient comme un domaine séparé de la conscience, qui est régi par des mécanismes de défense. L'inconscient influence les comportements humains de manière inconsciente, et seul un travail de psychanalyse permet de le dévoiler.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Freud a introduit le concept de refoulement, selon lequel des désirs ou pensées inacceptables sont poussés hors de la conscience pour être relégués dans l'inconscient.
-            </div>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de l'inconscient -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de l'inconscient</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Sigmund Freud">
-            <div class="author-info">
-                <h4>Sigmund Freud</h4>
-                <p><strong>Vision :</strong> Freud est le pionnier de la théorie de l'inconscient. Pour lui, l'inconscient abrite des pulsions refoulées, souvent sexuelles ou agressives, qui influencent de manière significative nos pensées et nos actions.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Carl Jung">
-            <div class="author-info">
-                <h4>Carl Jung</h4>
-                <p><strong>Vision :</strong> Jung a élargi la notion d'inconscient en introduisant l'idée d'un inconscient collectif, qui est partagé par toute l'humanité et contient des archétypes universels qui influencent nos comportements.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Jean-Paul Sartre">
-            <div class="author-info">
-                <h4>Jean-Paul Sartre</h4>
-                <p><strong>Vision :</strong> Sartre a rejeté l'idée d'un inconscient freudien. Pour lui, la liberté humaine et la conscience sont primordiales, et l'inconscient ne peut pas exister sans la conscience de soi. Il a préféré parler de mauvaise foi, un mécanisme par lequel les individus évitent la prise de conscience de leur liberté.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: L'inconscient et la Culture -->
-        <div>
-            <h2 class="section-title">L'inconscient et la Culture</h2>
-            <p>L'inconscient ne se limite pas à la sphère individuelle : il imprègne aussi la culture. Les œuvres d'art, la littérature, et le cinéma sont souvent des expressions de l'inconscient collectif ou personnel, selon les théories psychanalytiques.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Les symboles et les motifs récurrents dans les rêves ou dans l'art sont souvent des manifestations de l'inconscient collectif, selon Jung.
-            </div>
-        </div>
-
-    </div>
-
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>La Technique</h3>
-            <p class="lead">Exploration du rôle de la technique dans la philosophie contemporaine.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que la Technique ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que la Technique ?</h2>
-            <p>La technique désigne l'ensemble des moyens et procédés utilisés pour transformer le monde, créer des objets, ou accomplir des tâches. En philosophie, la technique est souvent étudiée sous l'angle de son impact sur l'homme, la société et la nature. Elle est parfois vue comme un outil au service de l'humanité, mais aussi comme un facteur qui façonne notre rapport au monde.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La technique a pris une importance croissante avec la révolution industrielle et l'avènement des technologies modernes, mais sa nature et ses implications restent des sujets de débat philosophique.
-            </div>
-        </div>
-
-        <!-- Section 2: La Technique selon les Philosophes -->
-        <div>
-            <h2 class="section-title">La Technique et les Philosophes</h2>
-            <p>De nombreux philosophes ont réfléchi à la place de la technique dans nos vies et dans notre conception du monde. Certains, comme Heidegger, critiquent l'emprise de la technique sur l'existence humaine, tandis que d'autres, comme Marx, la considèrent comme un moyen d'émancipation pour les travailleurs.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de la Technique -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de la Technique</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Martin Heidegger">
-            <div class="author-info">
-                <h4>Martin Heidegger</h4>
-                <p><strong>Vision :</strong> Heidegger critique la domination de la technique dans la modernité. Selon lui, la technique moderne nous prive de notre relation authentique avec l’être et le monde. Il parle de la "technique comme dévoilement" et de la manière dont elle réduit l'homme à un simple moyen dans un système utilitaire.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Karl Marx">
-            <div class="author-info">
-                <h4>Karl Marx</h4>
-                <p><strong>Vision :</strong> Marx voit la technique sous un angle économique et social. Pour lui, la technique et les outils sont des instruments qui peuvent être utilisés pour libérer l'humanité, mais dans le cadre du capitalisme, ils sont aliénants et exploitent les travailleurs. Il prône une appropriation collective des moyens de production pour permettre aux travailleurs de maîtriser la technique.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Gilbert Simondon">
-            <div class="author-info">
-                <h4>Gilbert Simondon</h4>
-                <p><strong>Vision :</strong> Simondon propose une vision plus positive de la technique. Il considère que la technique est une extension de l'homme et que les objets techniques ont une existence propre qui peut être en harmonie avec les individus. Selon lui, il est nécessaire de comprendre les objets techniques dans leur dimension ontologique pour les intégrer positivement à la société.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: La Technique dans la Société Moderne -->
-        <div>
-            <h2 class="section-title">La Technique dans la Société Moderne</h2>
-            <p>Dans le monde contemporain, la technique est omniprésente, de l'usage des technologies de l'information à la biotechnologie. Les philosophes contemporains s'interrogent sur son influence sur l'individu et la société, notamment dans des domaines comme l'automatisation, l'intelligence artificielle et l'impact environnemental des nouvelles technologies.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Le transhumanisme, un mouvement qui cherche à améliorer l'humain par la technologie, est un exemple extrême de l'impact de la technique sur notre définition de l'homme et de ses capacités.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>L'Art</h3>
-            <p class="lead">Exploration du concept de l'art à travers les siècles et ses implications philosophiques.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que l'Art ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que l'Art ?</h2>
-            <p>L'art est une forme d'expression humaine qui utilise des matériaux, des formes, des symboles, ou des médias pour susciter des émotions, des réflexions, et des significations. Les philosophes ont longtemps débattu de la nature de l'art, de ses buts, et de son rôle dans la société. La définition de l'art a évolué au fil des siècles, allant de la recherche de la beauté à l'expression de l'âme humaine ou de la société.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Depuis l'Antiquité, l'art a été vu comme un moyen de représentation du réel ou de la recherche de la beauté. Cependant, des courants modernes et contemporains, comme le cubisme ou le surréalisme, ont redéfini cette notion.
-            </div>
-        </div>
-
-        <!-- Section 2: L'Art et la Philosophie de l'Esthétique -->
-        <div>
-            <h2 class="section-title">L'Art et la Philosophie de l'Esthétique</h2>
-            <p>L'esthétique est la branche de la philosophie qui s'intéresse à la beauté, à l'art, et à l'expérience esthétique. Depuis Platon, les philosophes ont tenté de comprendre ce qui fait qu'une œuvre est belle ou significative. Cette question a conduit à des réflexions sur la perception esthétique, la subjectivité, et l'objet d'art lui-même.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de l'Art -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de l'Art</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Platon">
-            <div class="author-info">
-                <h4>Platon</h4>
-                <p><strong>Vision :</strong> Platon a une vision critique de l'art dans son œuvre *La République*. Selon lui, l'art est une imitation du monde sensible, qui lui-même n'est qu'une copie du monde des Idées. L'art peut ainsi détourner l'âme de la vérité et de la connaissance. Il le considère comme une illusion qui fausse la perception du réel.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Aristote">
-            <div class="author-info">
-                <h4>Aristote</h4>
-                <p><strong>Vision :</strong> Contrairement à Platon, Aristote considère l'art comme un moyen de compréhension et d'émotion. Dans sa *Poétique*, il définit l'art comme une imitation de l'action humaine (mimesis) et voit dans la tragédie un moyen de purger les passions humaines (catharsis). L'art, pour lui, est une représentation qui aide l'homme à saisir des vérités profondes sur la condition humaine.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Georg Wilhelm Friedrich Hegel">
-            <div class="author-info">
-                <h4>Georg Wilhelm Friedrich Hegel</h4>
-                <p><strong>Vision :</strong> Hegel voit l'art comme une manifestation de l'esprit humain, un moyen par lequel l'Esprit se réalise dans le monde. Pour lui, l'art est une forme d'expression de la liberté humaine, et il considère que l'art a évolué dans l'histoire à travers différents stades, culminant dans l'art moderne, où la pensée et la liberté sont pleinement réalisées.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Friedrich Nietzsche">
-            <div class="author-info">
-                <h4>Friedrich Nietzsche</h4>
-                <p><strong>Vision :</strong> Nietzsche considère l'art comme un aspect fondamental de l'existence humaine. Dans son ouvrage *La Naissance de la Tragédie*, il distingue deux forces opposées : l'Apollinien, représentant l'ordre et la beauté, et le Dionysiaque, représentant la spontanéité et le chaos. Pour Nietzsche, l'art est la fusion de ces forces, et c'est à travers l'art que l'homme accède à la véritable liberté et à la transcendance.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Arthur Danto">
-            <div class="author-info">
-                <h4>Arthur Danto</h4>
-                <p><strong>Vision :</strong> Danto propose une vision contemporaine de l'art. Dans sa théorie, il affirme que l'art ne se définit plus par une forme ou une technique spécifique, mais par son contexte et sa signification. Il introduit l'idée que "tout peut être de l'art", et que ce qui fait d'une œuvre d'art une œuvre d'art, c'est sa capacité à nous faire réfléchir et à nous confronter à des questions profondes sur le monde.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: L'Art et la Société Moderne -->
-        <div>
-            <h2 class="section-title">L'Art dans la Société Moderne</h2>
-            <p>Dans la société contemporaine, l'art joue un rôle fondamental en tant que reflet des préoccupations sociales, politiques et culturelles. Avec l'avènement de nouveaux moyens d'expression, tels que l'art numérique et la performance, la frontière entre art et non-art devient de plus en plus floue. L'art, dans la modernité, se caractérise par sa capacité à questionner, à choquer et à ouvrir des espaces de réflexion sur la condition humaine.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> L'art conceptuel et les mouvements comme le dadaïsme ont redéfini l'idée même d'art en rompant avec les traditions artistiques et en mettant l'accent sur l'idée et le message plutôt que la forme ou la technique.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>Le Travail</h3>
-            <p class="lead">Une exploration du travail dans la philosophie, ses implications éthiques, sociales et politiques.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que le Travail ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que le Travail ?</h2>
-            <p>Le travail est une activité humaine par laquelle l'homme transforme la nature pour satisfaire ses besoins. Il est au cœur de la vie sociale, économique et politique, et joue un rôle essentiel dans la construction de la société et de l'individu. En philosophie, le travail est souvent examiné sous des angles multiples : comme condition de la liberté, comme source d'aliénation, ou comme moyen d'émancipation.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Le travail n'est pas seulement une activité économique ; il constitue aussi un moyen de se réaliser, d'affirmer son identité et de contribuer à la société. Cependant, il peut aussi devenir une forme d'aliénation dans certains contextes, notamment dans le capitalisme.
-            </div>
-        </div>
-
-        <!-- Section 2: Le Travail et la Philosophie de l'Économie -->
-        <div>
-            <h2 class="section-title">Le Travail et la Philosophie de l'Économie</h2>
-            <p>La philosophie économique a souvent abordé le travail sous l'angle de sa valeur, de son rôle dans la production de richesses et de son rapport à la société. Le travail est lié à la notion de valeur dans le cadre de l'économie de marché, où il est échangé contre un salaire. Cependant, cette vision économique a été critiquée par plusieurs philosophes, qui ont mis en lumière la dimension humaine et sociale du travail.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision du Travail -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision du Travail</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Karl Marx">
-            <div class="author-info">
-                <h4>Karl Marx</h4>
-                <p><strong>Vision :</strong> Pour Marx, le travail est la source de la valeur et le fondement de l'économie. Cependant, dans le capitalisme, il devient une source d'aliénation : l'ouvrier perd le contrôle de son travail, qui devient une marchandise. Marx prône la révolution prolétarienne, où les travailleurs prendraient le contrôle des moyens de production et transformeraient la société.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Georg Wilhelm Friedrich Hegel">
-            <div class="author-info">
-                <h4>Georg Wilhelm Friedrich Hegel</h4>
-                <p><strong>Vision :</strong> Hegel voit le travail comme une activité essentielle à la réalisation de soi. Dans son *Phénoménologie de l'Esprit*, il analyse le travail comme un moyen par lequel l'individu se réalise et prend conscience de sa liberté. Le travail est une forme de lutte pour la reconnaissance et l'autodéveloppement, dans un cadre social où la division du travail permet l'auto-affirmation.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Simone Weil">
-            <div class="author-info">
-                <h4>Simone Weil</h4>
-                <p><strong>Vision :</strong> Simone Weil aborde le travail comme une activité qui doit être respectée pour sa dignité humaine. Cependant, elle critique le travail moderne, qui est souvent aliénant et déshumanisant. Selon elle, la clé du travail est la quête de sens et de lien avec la réalité, loin de la simple soumission à un système économique de production sans âme.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Hannah Arendt">
-            <div class="author-info">
-                <h4>Hannah Arendt</h4>
-                <p><strong>Vision :</strong> Arendt distingue le travail, l'œuvre et l'action dans sa réflexion politique. Le travail, selon elle, est nécessaire pour maintenir la vie humaine et les conditions matérielles de l'existence. Cependant, elle critique l'absorption dans le travail au détriment de la liberté et de l'action politique. Elle voit le travail comme une activité nécessaire mais qui ne doit pas être confondue avec la véritable liberté humaine, qui se trouve dans l'action collective et la réflexion politique.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: Le Travail dans la Société Moderne -->
-        <div>
-            <h2 class="section-title">Le Travail dans la Société Moderne</h2>
-            <p>Dans la société contemporaine, le travail occupe une place centrale, mais la nature du travail a profondément changé avec la révolution industrielle et l'automatisation. Le travail salarié, les conditions de travail, et la place du travailleur dans l'économie globale sont des questions majeures. Par ailleurs, la question de l'épuisement, de l'aliénation au travail et de l'équilibre entre vie professionnelle et personnelle devient de plus en plus importante dans le débat public.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La montée des emplois précaires, la gig economy et l'automatisation soulèvent des interrogations sur l'avenir du travail, la dignité des travailleurs et la redistribution des richesses.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>La Nature</h3>
-            <p class="lead">Une exploration philosophique de la nature, ses implications éthiques, esthétiques et métaphysiques.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que la Nature ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que la Nature ?</h2>
-            <p>La nature désigne l'ensemble du monde naturel, en opposition à l'artifice humain, et comprend les éléments physiques et biologiques qui composent l'univers. En philosophie, la nature est souvent étudiée à travers des questions métaphysiques, épistémologiques et éthiques. Elle est le cadre de l'existence humaine et un sujet d'émerveillement, mais aussi de domination dans les sociétés modernes.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La nature n'est pas seulement un objet d'étude scientifique, mais aussi un concept philosophique complexe qui soulève des questions sur l'origine de l'univers, l'harmonie du monde et la place de l'homme dans le cosmos.
-            </div>
-        </div>
-
-        <!-- Section 2: La Nature et la Philosophie de la Métaphysique -->
-        <div>
-            <h2 class="section-title">La Nature et la Philosophie de la Métaphysique</h2>
-            <p>La nature est un sujet central de la métaphysique, qui cherche à comprendre les principes fondamentaux de l'existence. Par exemple, Aristote a développé une vision de la nature comme un système organisé, gouverné par des lois internes. D'autres philosophes, comme Leibniz et Spinoza, ont proposé des visions de la nature liées à des principes divins ou à une substance unique qui sous-tend tout le réel.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de la Nature -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de la Nature</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Aristote">
-            <div class="author-info">
-                <h4>Aristote</h4>
-                <p><strong>Vision :</strong> Aristote aborde la nature dans sa *Métaphysique* et sa *Physique*, où il définit la nature comme un ensemble de causes et de principes régissant l'existence. Pour lui, chaque être naturel possède une forme (ou essence) et une finalité (ou cause finale). La nature est organisée et chaque être en fait partie dans un grand tout, avec une harmonie interne et un but.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Jean-Jacques Rousseau">
-            <div class="author-info">
-                <h4>Jean-Jacques Rousseau</h4>
-                <p><strong>Vision :</strong> Rousseau voit la nature comme l'état originel de l'homme, une condition de pureté et d'égalité. Dans son ouvrage *Du Contrat Social*, il contraste la nature humaine, qui est fondamentalement bonne, avec la société qui la corrompt. Il prône un retour à la nature pour retrouver la liberté et la vertu. La nature est ici perçue comme une force morale et source de sagesse.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Immanuel Kant">
-            <div class="author-info">
-                <h4>Immanuel Kant</h4>
-                <p><strong>Vision :</strong> Kant traite de la nature à travers sa philosophie des sciences et de la morale. Selon lui, la nature est un objet d'expérience humaine structuré par les catégories de notre entendement. Pour Kant, l'homme perçoit la nature à travers ses propres filtres cognitifs, et il doit respecter la nature en tant que loi morale régissant l'existence humaine. La beauté de la nature est liée à l'idée du sublime, une expérience esthétique qui pousse l'homme à s'élever au-delà du monde matériel.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Martin Heidegger">
-            <div class="author-info">
-                <h4>Martin Heidegger</h4>
-                <p><strong>Vision :</strong> Heidegger voit la nature à travers une lentille existentialiste et phénoménologique. Dans son œuvre *Être et Temps*, il explore la relation de l'homme à son environnement naturel et à la technologie. Pour Heidegger, la nature n'est pas simplement un objet extérieur à l'homme, mais une part intégrante de l'expérience humaine. Il critique la vision utilitaire et instrumentale de la nature dans la modernité et appelle à un retour à une vision plus authentique de notre être-au-monde.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Albert Schweitzer">
-            <div class="author-info">
-                <h4>Albert Schweitzer</h4>
-                <p><strong>Vision :</strong> Albert Schweitzer a développé une éthique du respect de la vie, dans laquelle la nature occupe une place essentielle. Il affirme que la nature, avec toutes ses formes de vie, mérite d'être respectée et protégée. Dans son concept de *révérence pour la vie*, il considère que chaque forme de vie a une valeur intrinsèque et que l'humanité doit agir en gardienne et protectrice de la nature.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: La Nature et l'Écologie Moderne -->
-        <div>
-            <h2 class="section-title">La Nature et l'Écologie Moderne</h2>
-            <p>Avec l'émergence de la crise écologique, la relation entre l'homme et la nature est devenue un sujet crucial dans le débat philosophique et politique contemporain. L'anthropocène, notion qui désigne une époque géologique marquée par l'impact de l'humanité sur la Terre, nous force à repenser notre rapport à la nature. Les philosophes contemporains plaident pour un respect accru de l'environnement et pour des changements profonds dans la manière dont les sociétés humaines interagissent avec le monde naturel.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La question de l'écologie politique, de l'éthique environnementale et du développement durable est désormais au cœur des discussions philosophiques, avec des auteurs comme Bruno Latour et Arne Naess qui proposent de nouvelles manières de concevoir notre relation à la nature.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>La Culture</h3>
-            <p class="lead">Une exploration philosophique de la culture, ses implications sociales, esthétiques et anthropologiques.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que la Culture ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que la Culture ?</h2>
-            <p>La culture désigne l'ensemble des connaissances, des croyances, des pratiques, des coutumes et des valeurs qui sont transmises de génération en génération au sein d'une société. Elle englobe l'art, la langue, la religion, les institutions et toutes les formes d'expression collective. En philosophie, la culture est souvent étudiée à travers sa relation avec la société, l'individu, et le processus de civilisation.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La culture n'est pas seulement un ensemble de traditions ou d'expressions artistiques ; elle est aussi une construction sociale qui façonne les comportements, les normes et les perceptions de la réalité.
-            </div>
-        </div>
-
-        <!-- Section 2: La Culture et la Philosophie Sociale -->
-        <div>
-            <h2 class="section-title">La Culture et la Philosophie Sociale</h2>
-            <p>La culture est au cœur de la réflexion sociale en philosophie. Des auteurs comme Karl Marx ont abordé la culture comme un moyen de domination dans le cadre des rapports de classe, alors que d'autres, comme Max Weber, ont analysé son rôle dans la formation des sociétés et des systèmes de croyance. Selon Weber, la culture (et notamment les valeurs religieuses) joue un rôle déterminant dans la structuration économique et politique des sociétés.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de la Culture -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de la Culture</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Platon">
-            <div class="author-info">
-                <h4>Platon</h4>
-                <p><strong>Vision :</strong> Platon, dans son œuvre *La République*, voit la culture comme un moyen d'éduquer et de former l'âme humaine pour qu'elle atteigne la vérité et la justice. Il met en avant l'idée que la culture, à travers l'art et l'éducation, doit viser à élever l'âme vers la contemplation des Idées, qui sont les vérités universelles et intemporelles.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Max Weber">
-            <div class="author-info">
-                <h4>Max Weber</h4>
-                <p><strong>Vision :</strong> Max Weber est l'un des grands sociologues qui a étudié la culture à travers le prisme de la sociologie et de l'anthropologie. Il a introduit l'idée que les valeurs culturelles, notamment celles des religions, influencent profondément le développement des systèmes économiques et politiques. Dans son essai *L'éthique protestante et l'esprit du capitalisme*, il soutient que la culture protestante a joué un rôle fondamental dans le développement du capitalisme moderne.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Friedrich Nietzsche">
-            <div class="author-info">
-                <h4>Friedrich Nietzsche</h4>
-                <p><strong>Vision :</strong> Nietzsche propose une critique radicale de la culture occidentale, qu'il juge décadente et répressive. Dans son ouvrage *La naissance de la tragédie*, il oppose deux éléments fondamentaux de la culture : l'élément apollinien (raison, ordre) et l'élément dionysien (chaos, instinct). Il prône la libération des forces créatrices et une nouvelle affirmation de la vie, rejetant les valeurs morales traditionnelles imposées par la culture chrétienne et la société bourgeoise.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Claude Lévi-Strauss">
-            <div class="author-info">
-                <h4>Claude Lévi-Strauss</h4>
-                <p><strong>Vision :</strong> Lévi-Strauss est un anthropologue qui a profondément influencé la pensée sur la culture. Il considère que la culture humaine doit être comprise à travers les structures sous-jacentes qui organisent les sociétés, comme les mythes et les systèmes de parenté. Il développe l'idée que la culture est une manière pour l'humanité de structurer son rapport à la nature et de donner un sens à l'existence. Pour lui, la culture est un système de règles et de codes qui régissent les relations humaines.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Pierre Bourdieu">
-            <div class="author-info">
-                <h4>Pierre Bourdieu</h4>
-                <p><strong>Vision :</strong> Pierre Bourdieu a développé une approche sociologique de la culture, en soulignant le rôle des *habitus* (les dispositions durables et transposables) et du *champ culturel*. Selon lui, la culture est un moyen de distinction sociale, et la domination culturelle est un aspect central des rapports de pouvoir dans une société. Bourdieu critique également l'idée selon laquelle la culture serait purement une question de mérite ou de goût personnel.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: La Culture dans la Société Contemporaine -->
-        <div>
-            <h2 class="section-title">La Culture dans la Société Contemporaine</h2>
-            <p>Dans la société contemporaine, la culture est marquée par la mondialisation, la diversité des formes d'expressions culturelles et l'impact des nouvelles technologies. Les médias, la culture de masse et la consommation de biens culturels ont transformé notre manière de vivre la culture. Les enjeux de la diversité culturelle, de l'appropriation culturelle, et des inégalités d'accès à la culture sont des questions importantes aujourd'hui.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La culture devient de plus en plus globalisée avec l'influence des technologies numériques et des plateformes sociales, mais des tensions émergent autour de l'homogénéisation des cultures et de la perte de diversité locale.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>La Religion</h3>
-            <p class="lead">Une exploration philosophique de la religion, ses implications métaphysiques, morales et sociales.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que la Religion ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que la Religion ?</h2>
-            <p>La religion est un ensemble de croyances, de pratiques et de valeurs partagées par un groupe humain, généralement centrées autour de la figure de Dieu ou des divinités, du sacré, de l'âme, et de la vie après la mort. Elle est une réponse aux questions existentielles profondes, sur le sens de la vie et de l'univers, et elle structure souvent les codes moraux et sociaux d'une civilisation. En philosophie, la religion est souvent interrogée pour son rôle dans la quête de vérité, la moralité et la liberté humaine.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La religion est à la fois un phénomène social et un phénomène individuel, dans lequel la croyance en un principe transcendant est parfois perçue comme une source de sens et de consolation.
-            </div>
-        </div>
-
-        <!-- Section 2: La Religion et la Philosophie de la Morale -->
-        <div>
-            <h2 class="section-title">La Religion et la Philosophie de la Morale</h2>
-            <p>De nombreux philosophes ont abordé la religion sous l'angle moral. Pour Kant, par exemple, la religion doit être conforme aux principes de la raison pratique, et l'idée de Dieu est indispensable pour fonder une morale universelle. Marx, quant à lui, considère la religion comme un moyen d'aliénation, un "opioïde du peuple" qui détourne les masses de l'action révolutionnaire en leur offrant une consolation illusoire face à la souffrance sociale. D'autres, comme Hegel, ont vu la religion comme un moyen d'expression de l'esprit absolu, une étape dans le développement de la liberté humaine.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de la Religion -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de la Religion</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Immanuel Kant">
-            <div class="author-info">
-                <h4>Immanuel Kant</h4>
-                <p><strong>Vision :</strong> Kant affirme que la religion ne doit pas se baser sur des révélations surnaturelles, mais doit être une pratique morale fondée sur la raison. Dans sa philosophie morale, il soutient que Dieu est une nécessité morale pour justifier l'idée d'une récompense morale dans l'au-delà, mais il rejette les dogmes religieux au profit d'une éthique universelle. La religion, pour Kant, est une forme d'auto-discipline morale.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Friedrich Nietzsche">
-            <div class="author-info">
-                <h4>Friedrich Nietzsche</h4>
-                <p><strong>Vision :</strong> Nietzsche est célèbre pour sa critique radicale de la religion, en particulier du christianisme. Selon lui, la religion a pour effet d'empoisonner l'existence humaine en prêchant la soumission et la résignation. Dans *Ainsi parlait Zarathoustra*, il déclare que "Dieu est mort", un acte symbolique qui signifie la fin des valeurs traditionnelles et le besoin d'une nouvelle réévaluation des valeurs humaines. Nietzsche prône une affirmation de la vie sans transcendance religieuse.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Karl Marx">
-            <div class="author-info">
-                <h4>Karl Marx</h4>
-                <p><strong>Vision :</strong> Marx considère la religion comme une forme d'aliénation qui masque les véritables causes de la souffrance humaine. Dans sa célèbre formule "La religion est l'opium du peuple", il suggère que la religion sert à apaiser les masses opprimées en leur offrant une promesse d'un monde meilleur, tout en les empêchant de prendre conscience de la nécessité de changer les conditions matérielles et sociales. La religion, pour Marx, est un instrument de domination des classes dominantes.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Georges Bataille">
-            <div class="author-info">
-                <h4>Georges Bataille</h4>
-                <p><strong>Vision :</strong> Georges Bataille développe une réflexion sur le sacré et l'excès dans la religion. Selon lui, la religion n'est pas simplement un ensemble de croyances mais une expérience de rupture, un dépassement des limites imposées par la société. Dans ses écrits, il explore l'idée que la religion est intrinsèquement liée à l'expérience de l'irrationnel et de la transgression, allant au-delà de la simple morale ou de la théologie.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Mircea Eliade">
-            <div class="author-info">
-                <h4>Mircea Eliade</h4>
-                <p><strong>Vision :</strong> Mircea Eliade est un historien des religions qui s'intéresse particulièrement à la dimension symbolique et mythologique de la religion. Il soutient que la religion est un phénomène universel qui structure l'expérience humaine et offre des réponses aux questions existentielles, en particulier à travers les mythes, les rituels et la sacralisation du temps et de l'espace. Selon lui, la religion permet de donner un sens profond à la vie humaine.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: La Religion et la Société Contemporaine -->
-        <div>
-            <h2 class="section-title">La Religion et la Société Contemporaine</h2>
-            <p>La religion continue de jouer un rôle central dans de nombreuses sociétés, bien que le monde moderne soit de plus en plus marqué par la laïcité et la sécularisation. Les débats autour de la religion se posent souvent en termes de liberté de croyance, de tolérance, et de séparation de la religion et de l'État. Aujourd'hui, de nombreuses réflexions philosophiques portent sur la pluralité des religions et sur la manière dont elles influencent la politique, la culture et les relations internationales.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La montée des fondamentalismes religieux dans certaines parties du monde et la coexistence de religions multiples dans des sociétés globalisées soulèvent de nouvelles questions philosophiques, notamment autour de l'intégration, de la tolérance et du dialogue interreligieux.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>L'État</h3>
-            <p class="lead">Une exploration philosophique de l'État, ses origines, sa légitimité et son rôle dans la société humaine.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que l'État ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que l'État ?</h2>
-            <p>L'État est une organisation politique qui détient le pouvoir souverain sur un territoire et une population. Il est chargé de maintenir l'ordre, de garantir la sécurité, et de faire respecter les lois. Les philosophes ont réfléchi sur l'origine de l'État, sur sa nature et sur ses justifications. Pour certains, l'État est une construction humaine nécessaire pour organiser la société, tandis que pour d'autres, il peut être perçu comme un instrument d'oppression.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> L'État est souvent étudié sous l'angle de la justice et de la légitimité, questionnant les fondements du pouvoir et des droits des citoyens. Il est aussi un objet de critique, notamment lorsqu'il est associé à des formes d'autoritarisme et d'injustice.
-            </div>
-        </div>
-
-        <!-- Section 2: L'État et la Philosophie Politique -->
-        <div>
-            <h2 class="section-title">L'État et la Philosophie Politique</h2>
-            <p>En philosophie politique, l'État est considéré comme l'institution qui organise la vie collective. Des penseurs comme Thomas Hobbes, Jean-Jacques Rousseau et Karl Marx ont exploré les relations entre l'individu et l'État. Hobbes voit l'État comme un contrat social nécessaire pour sortir de l'état de nature, un état de guerre de tous contre tous. Rousseau, quant à lui, critique l'institution de l'État moderne, qu'il considère comme une source d'inégalité, et propose l'idée du *contrat social*, une forme d'accord qui garantit la liberté et l'égalité.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de l'État -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de l'État</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Thomas Hobbes">
-            <div class="author-info">
-                <h4>Thomas Hobbes</h4>
-                <p><strong>Vision :</strong> Thomas Hobbes, dans *Le Léviathan*, défend l'idée que l'État est une nécessité pour éviter le chaos. Dans l'état de nature, selon Hobbes, les individus sont en guerre permanente les uns contre les autres, ce qui rend la vie humaine "solitaire, pauvre, désagréable, brutale et courte". L'État est donc un contrat social qui donne au souverain le pouvoir absolu pour garantir la paix et la sécurité.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Jean-Jacques Rousseau">
-            <div class="author-info">
-                <h4>Jean-Jacques Rousseau</h4>
-                <p><strong>Vision :</strong> Rousseau, dans *Le Contrat Social*, critique la société moderne et ses inégalités. Il propose l'idée du contrat social comme base d'un État légitime. Selon Rousseau, l'État doit être fondé sur la volonté générale, c'est-à-dire l'intérêt commun de tous les citoyens. L'État doit garantir la liberté et l'égalité, en permettant aux individus de vivre en harmonie et en supprimant les rapports d'inégalité sociale qui caractérisent l'ordre social actuel.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Karl Marx">
-            <div class="author-info">
-                <h4>Karl Marx</h4>
-                <p><strong>Vision :</strong> Karl Marx, dans ses écrits, voit l'État comme un instrument de domination des classes dirigeantes. Selon Marx, l'État est le reflet des rapports de production dans la société. Dans une société capitaliste, l'État sert les intérêts de la bourgeoisie et maintient l'exploitation des ouvriers. Marx appelle à une révolution prolétarienne pour renverser l'État bourgeois et établir une société sans classes où l'État, en tant qu'instrument de domination, disparaîtrait.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Max Weber">
-            <div class="author-info">
-                <h4>Max Weber</h4>
-                <p><strong>Vision :</strong> Max Weber aborde l'État sous l'angle de la légitimité et du pouvoir. Il soutient que l'État est la seule institution qui détient le monopole de la violence légitime. Weber distingue trois types de domination : la domination traditionnelle, la domination charismatique et la domination légale-rationnelle. Il considère que l'État moderne est fondé sur la légalité et le respect des règles, et que sa légitimité repose sur l'acceptation des citoyens de l'ordre juridique et des normes établies.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Platon">
-            <div class="author-info">
-                <h4>Platon</h4>
-                <p><strong>Vision :</strong> Dans *La République*, Platon conçoit l'État comme un moyen de réaliser la justice et d'organiser une société juste. Selon lui, l'État doit être dirigé par des philosophes-rois, des individus sages et éclairés qui gouverneront dans l'intérêt de la collectivité. Platon insiste sur la division du travail et la spécialisation des fonctions au sein de la société, ce qui est nécessaire pour garantir l'harmonie et la justice.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: L'État et la Société Contemporaine -->
-        <div>
-            <h2 class="section-title">L'État et la Société Contemporaine</h2>
-            <p>Dans la société contemporaine, l'État joue un rôle complexe entre maintien de l'ordre et défense des libertés individuelles. La question de la démocratie, de la représentation politique et de la justice sociale sont au cœur des débats sur l'État aujourd'hui. L'État moderne est souvent vu comme un acteur clé dans la régulation économique et sociale, mais il est aussi critiqué pour sa tendance à exercer des formes de pouvoir autoritaire ou à s'aligner sur les intérêts économiques dominants. Les débats contemporains portent également sur la question de l'État-nation dans un contexte de mondialisation croissante.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> L'État moderne est aussi confronté à des défis liés à la gouvernance mondiale, à la protection des droits de l'homme, et à la question de la justice distributive dans un monde de plus en plus interconnecté.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>Le Bonheur</h3>
-            <p class="lead">Une exploration philosophique du bonheur, ses significations, ses implications morales et éthiques.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que le Bonheur ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que le Bonheur ?</h2>
-            <p>Le bonheur est une notion complexe qui varie selon les cultures, les croyances et les époques. En philosophie, il est souvent vu comme l'aboutissement de la vie humaine, l'ultime bien auquel les individus aspirent. Le bonheur peut être compris de différentes manières : comme une sensation de plaisir, une satisfaction des désirs, un accomplissement de soi, ou encore comme un état d'équilibre et de vertu. Il existe différentes écoles philosophiques qui abordent cette question sous des angles variés, allant de l'hédonisme à l'éthique de la vertu.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Le bonheur est souvent vu comme une fin en soi, mais il peut aussi être perçu comme un moyen d'atteindre un but plus profond, comme la paix intérieure, la sagesse ou la moralité.
-            </div>
-        </div>
-
-        <!-- Section 2: Les Philosophies du Bonheur -->
-        <div>
-            <h2 class="section-title">Les Philosophies du Bonheur</h2>
-            <p>Différentes écoles philosophiques ont proposé des définitions et des approches du bonheur. Pour les hédonistes comme **Épicure**, le bonheur réside dans la recherche du plaisir et l'évitement de la douleur. **Aristote**, quant à lui, propose une vision plus complexe du bonheur dans sa théorie de la *eudaimonia* (le bien-être), qui se réalise par la vertu et l'accomplissement de son potentiel humain. D'autres, comme **John Stuart Mill**, lient le bonheur à la maximisation du plaisir et de l'utilité, tandis que **Kant** affirme que le bonheur ne peut être le principe de la moralité, mais qu'il est lié à l'accomplissement du devoir moral.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision du Bonheur -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision du Bonheur</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Aristote">
-            <div class="author-info">
-                <h4>Aristote</h4>
-                <p><strong>Vision :</strong> Aristote définit le bonheur comme l'accomplissement de la vie humaine selon la vertu, dans sa notion de *eudaimonia*. Le bonheur est pour lui un état de bien-être durable, atteint par la pratique de la vertu et l'accomplissement des fonctions humaines naturelles. Pour Aristote, il ne s'agit pas seulement de plaisir ou de satisfaction des désirs, mais de vivre une vie moralement bonne, en harmonie avec sa nature humaine.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Épicure">
-            <div class="author-info">
-                <h4>Épicure</h4>
-                <p><strong>Vision :</strong> Pour Épicure, le bonheur est synonyme de plaisir, mais il distingue le plaisir simple, modéré et intellectuel des plaisirs physiques. Il soutient que la recherche du plaisir, associée à l'évitement de la douleur, mène à une vie heureuse. Épicure met l'accent sur la satisfaction des désirs naturels et nécessaires, et sur l'importance de cultiver l'amitié et la sagesse pour atteindre le bonheur.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="John Stuart Mill">
-            <div class="author-info">
-                <h4>John Stuart Mill</h4>
-                <p><strong>Vision :</strong> Mill, dans sa théorie de l'utilitarisme, affirme que le bonheur est la maximisation du plaisir et la réduction de la souffrance. Selon lui, une action est moralement bonne si elle produit le plus grand bonheur pour le plus grand nombre. Le bonheur, dans cette vision, est lié à l'utilité sociale et à la maximisation du bien-être collectif.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Immanuel Kant">
-            <div class="author-info">
-                <h4>Immanuel Kant</h4>
-                <p><strong>Vision :</strong> Kant distingue le bonheur de la moralité. Il soutient que le bonheur ne doit pas être la fin de l'action morale. Pour Kant, ce qui est moralement juste est ce qui respecte les principes universels de la raison, tels que l'impératif catégorique. Le bonheur, bien que souhaitable, ne peut être un principe moral, car il est trop subjectif et contingent.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Friedrich Nietzsche">
-            <div class="author-info">
-                <h4>Friedrich Nietzsche</h4>
-                <p><strong>Vision :</strong> Nietzsche critique l'idée traditionnelle du bonheur. Il rejette l'idée que le bonheur soit la fin de la vie humaine et propose une conception plus dynamique et affirmative de la vie. Pour lui, le véritable bonheur réside dans l'affirmation de soi, la puissance de l'individu, et la capacité à surmonter les défis et les souffrances de la vie. Il introduit le concept du *surhomme*, une figure qui dépasse les valeurs conventionnelles et crée ses propres critères de bonheur.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: Le Bonheur et la Société Contemporaine -->
-        <div>
-            <h2 class="section-title">Le Bonheur et la Société Contemporaine</h2>
-            <p>Dans la société contemporaine, la recherche du bonheur est devenue un sujet central, avec des débats sur le sens de la vie, la consommation, le travail et la quête du bien-être. Les philosophies modernes et contemporaines ont largement influencé la manière dont nous percevons le bonheur. Les défis actuels, tels que l'individualisme, le matérialisme et l'aliénation dans les sociétés modernes, ont conduit à des réflexions nouvelles sur ce qui constitue véritablement une vie épanouie et pleine de sens. La question du bonheur est également liée à la santé mentale, à la gestion du stress et à l'équilibre de vie dans le monde moderne.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Le bonheur est aujourd'hui souvent abordé sous l'angle du bien-être subjectif et de la satisfaction personnelle. Cependant, il est également mis en débat dans le cadre de la justice sociale, où l'accès à une vie épanouie pour tous devient une priorité.
-            </div>
-        </div>
-
-    </div>
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>La Liberté</h3>
-            <p class="lead">Une exploration philosophique de la liberté, ses significations, ses implications morales et sociales.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que la Liberté ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que la Liberté ?</h2>
-            <p>La liberté est une notion complexe qui renvoie à l'idée que l'individu est maître de ses actions, de ses choix et de sa propre vie. Cependant, la liberté ne signifie pas seulement l'absence de contraintes ; elle implique également la possibilité d'agir selon sa volonté, tout en tenant compte des autres et des lois sociales. Il existe différents types de liberté, notamment la liberté individuelle, politique et économique, et la question centrale est de savoir jusqu'où la liberté individuelle peut s'exercer sans empiéter sur celle des autres.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La liberté est un principe fondamental dans les démocraties modernes, mais elle doit souvent être mise en balance avec la sécurité, l'ordre public et le bien-être collectif.
-            </div>
-        </div>
-
-        <!-- Section 2: Les Philosophies de la Liberté -->
-        <div>
-            <h2 class="section-title">Les Philosophies de la Liberté</h2>
-            <p>Les philosophes ont réfléchi sur la liberté sous différents angles : certains ont insisté sur la liberté comme absence de contraintes externes, tandis que d'autres ont vu la liberté comme la capacité d'agir selon la raison et la moralité. **Jean-Jacques Rousseau**, dans *Le Contrat Social*, propose l'idée de la liberté comme participation à la volonté générale, qui dépasse les désirs individuels. **John Stuart Mill**, quant à lui, défend l'idée que la liberté individuelle doit être protégée tant qu'elle ne nuit pas à autrui, selon son principe du "libre développement de la personnalité".</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision de la Liberté -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision de la Liberté</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Jean-Jacques Rousseau">
-            <div class="author-info">
-                <h4>Jean-Jacques Rousseau</h4>
-                <p><strong>Vision :</strong> Rousseau, dans *Le Contrat Social*, définit la liberté comme étant l'obéissance à la loi que l'on s'est prescrite soi-même. Selon lui, la véritable liberté ne réside pas dans l'absence de contraintes, mais dans la participation à la volonté générale, où les individus se soumettent à des lois justes qui garantissent la liberté et l'égalité pour tous. La liberté est ainsi comprise comme une condition de la vie en société, qui repose sur le principe du contrat social.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="John Stuart Mill">
-            <div class="author-info">
-                <h4>John Stuart Mill</h4>
-                <p><strong>Vision :</strong> Mill défend une conception de la liberté fondée sur l'individualisme et l'autonomie personnelle. Dans son ouvrage *De la liberté*, il affirme que l'individu doit être libre de poursuivre ses désirs et ses passions, tant que cela ne nuit pas aux autres. Le seul domaine où l'autorité légitime de l'État intervient est la prévention du tort causé à autrui. La liberté individuelle, selon Mill, est essentielle pour le progrès social et l'épanouissement humain.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Isaiah Berlin">
-            <div class="author-info">
-                <h4>Isaiah Berlin</h4>
-                <p><strong>Vision :</strong> Isaiah Berlin distingue deux concepts de la liberté : la liberté négative et la liberté positive. La liberté négative est la liberté de ne pas être entravé par des forces extérieures, comme la liberté d'action sans contrainte. En revanche, la liberté positive renvoie à la possibilité de se réaliser en tant qu'individu, de maîtriser sa vie, de choisir et de contrôler ses propres désirs. Berlin met en garde contre les dangers de la liberté positive, qui peut, selon lui, être utilisée pour justifier des formes de domination et d'autoritarisme.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Karl Marx">
-            <div class="author-info">
-                <h4>Karl Marx</h4>
-                <p><strong>Vision :</strong> Marx aborde la liberté sous l'angle des rapports de production et de classe. Il soutient que la véritable liberté ne peut être atteinte que dans une société sans classes, où l'exploitation est abolie. Selon Marx, la liberté des individus dans une société capitaliste est limitée par leur dépendance à l'égard des conditions économiques et des rapports de domination. La libération des travailleurs et la transformation de la société sont nécessaires pour permettre une véritable liberté humaine.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Immanuel Kant">
-            <div class="author-info">
-                <h4>Immanuel Kant</h4>
-                <p><strong>Vision :</strong> Kant voit la liberté non pas comme l'absence de contraintes, mais comme l'autonomie morale, c'est-à-dire la capacité de se gouverner soi-même selon des principes rationnels et universels. La véritable liberté réside dans l'obéissance à la loi morale, qu'un individu se donne à lui-même par le biais de la raison pratique. Pour Kant, la liberté est indissociable de la moralité et de la capacité à agir conformément à des principes moraux.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: La Liberté et la Société Contemporaine -->
-        <div>
-            <h2 class="section-title">La Liberté et la Société Contemporaine</h2>
-            <p>Dans la société contemporaine, la question de la liberté est au cœur des débats politiques et sociaux. Les droits individuels, les libertés publiques et la protection de la vie privée sont des thèmes essentiels dans les démocraties modernes. Cependant, la liberté individuelle se heurte souvent aux exigences collectives, comme la sécurité publique, l'ordre social et la justice sociale. Les débats sur la liberté aujourd'hui incluent des questions sur la surveillance, les libertés numériques, la liberté d'expression et les limites de l'intervention de l'État dans la vie privée des citoyens.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> La tension entre la liberté individuelle et les besoins collectifs demeure un problème central, notamment dans un contexte de mondialisation et de développement des technologies de surveillance.
-            </div>
-        </div>
-
-    </div>
-
-    <div class="fiche">
-        <!-- Header -->
-        <div class="fiche-header">
-            <h3>Le Droit</h3>
-            <p class="lead">Une exploration philosophique du droit, ses fondements, sa relation avec la justice et ses implications sociales et morales.</p>
-        </div>
-
-        <!-- Section 1: Qu'est-ce que le Droit ? -->
-        <div>
-            <h2 class="section-title">Qu'est-ce que le Droit ?</h2>
-            <p>Le droit est un ensemble de règles et de normes qui régissent les relations sociales au sein d'une communauté. Ces règles peuvent être formelles (lois) ou informelles (coutumes, usages), et elles ont pour objectif de garantir la justice, la sécurité et l'ordre social. Le droit se distingue de la morale en ce qu'il est contraignant et généralement appliqué par des institutions spécifiques (tribunaux, gouvernements). La question fondamentale du droit est de savoir comment ces règles sont établies, par qui elles sont imposées, et en quoi elles sont légitimes.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Le droit peut être vu comme un moyen d'assurer la paix sociale, en définissant ce qui est permis et ce qui est interdit. Cependant, l'interprétation du droit et son application ne sont jamais neutres, et la question de la justice est au cœur des débats juridiques.
-            </div>
-        </div>
-
-        <!-- Section 2: Les Philosophies du Droit -->
-        <div>
-            <h2 class="section-title">Les Philosophies du Droit</h2>
-            <p>Les théories du droit se sont développées au fil des siècles, influencées par des courants philosophiques variés. Les philosophes du droit s'interrogent sur la nature du droit, sa source et sa légitimité. **Platon**, dans *La République*, envisageait le droit comme une expression de l'ordre naturel et de la justice divine. **Aristote**, dans sa théorie de la justice, voyait le droit comme une tentative d'équilibrer les besoins et les intérêts des individus au sein de la société. **Jean-Jacques Rousseau** et **John Locke**, dans leurs théories du contrat social, ont exploré la manière dont les droits et devoirs sont établis par un consensus entre les individus pour garantir la liberté et l'égalité.</p>
-        </div>
-
-        <!-- Section 3: Auteurs Célèbres et leur Vision du Droit -->
-        <h2 class="section-title">Auteurs Célèbres et leur Vision du Droit</h2>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Platon">
-            <div class="author-info">
-                <h4>Platon</h4>
-                <p><strong>Vision :</strong> Platon, dans *La République*, conçoit le droit comme une expression de l'ordre naturel et divin. Selon lui, la justice et le droit doivent être guidés par la raison et la sagesse. Dans sa vision, les lois idéales sont celles qui sont en harmonie avec le monde des idées et qui garantissent le bien-être de la société. Le droit est donc un moyen de mettre en pratique la justice, qui, pour Platon, est un principe universel et immuable.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Aristote">
-            <div class="author-info">
-                <h4>Aristote</h4>
-                <p><strong>Vision :</strong> Aristote considère le droit comme une forme de justice qui repose sur la recherche de l'équilibre entre les besoins individuels et collectifs. Dans son ouvrage *La Politique*, il défend l'idée que le droit doit promouvoir la vertu et le bien commun. Pour Aristote, la loi doit être fondée sur la raison et permettre aux citoyens de vivre en harmonie, dans une société où l'équité et l'égalité sont au cœur des institutions.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Jean-Jacques Rousseau">
-            <div class="author-info">
-                <h4>Jean-Jacques Rousseau</h4>
-                <p><strong>Vision :</strong> Rousseau, dans *Le Contrat Social*, soutient que le droit découle du contrat social, un accord entre les individus pour créer une société où la volonté générale gouverne. Pour Rousseau, le droit est un moyen d'assurer l'égalité et la liberté, et il doit être fondé sur l'idée de la volonté collective, qui transcende les intérêts particuliers. Le droit devient ainsi un moyen d'atteindre la justice sociale et de garantir la liberté de chaque individu.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="John Locke">
-            <div class="author-info">
-                <h4>John Locke</h4>
-                <p><strong>Vision :</strong> Locke voit le droit comme un ensemble de règles naturelles dérivées de la raison humaine. Selon lui, les individus ont des droits naturels (vie, liberté, propriété) qui doivent être protégés par la loi. Dans *Le Deuxième Traité du gouvernement civil*, Locke argue que les lois doivent protéger les droits naturels des individus et que tout gouvernement légitime doit être fondé sur le consentement des gouvernés.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Karl Marx">
-            <div class="author-info">
-                <h4>Karl Marx</h4>
-                <p><strong>Vision :</strong> Marx aborde le droit sous un angle critique. Selon lui, le droit dans les sociétés capitalistes est un instrument de domination des classes dominantes. Le droit n'est pas neutre, mais sert à justifier et à maintenir les rapports de production existants. Dans une société sans classes, Marx prédit l'abolition des structures juridiques traditionnelles, et la justice se réalisera dans une société égalitaire, où les individus vivront selon leurs besoins et non selon leurs possessions.</p>
-            </div>
-        </div>
-
-        <div class="author-card">
-            <img src="https://i.pinimg.com/736x/dc/6c/b0/dc6cb0521d182f959da46aaee82e742f.jpg" alt="Immanuel Kant">
-            <div class="author-info">
-                <h4>Immanuel Kant</h4>
-                <p><strong>Vision :</strong> Kant voit le droit comme la condition nécessaire à la liberté, en permettant à chaque individu de vivre selon des principes rationnels et universels. Dans sa philosophie du droit, Kant soutient que les lois doivent respecter les principes de la moralité, fondées sur l'impératif catégorique. Le droit doit protéger la liberté individuelle tout en maintenant l'ordre et la justice, de sorte que chaque individu puisse exercer sa volonté sans nuire aux autres.</p>
-            </div>
-        </div>
-
-        <!-- Section 4: Le Droit et la Société Contemporaine -->
-        <div>
-            <h2 class="section-title">Le Droit et la Société Contemporaine</h2>
-            <p>Dans la société contemporaine, le droit joue un rôle crucial dans la régulation des relations entre les individus et l'État, ainsi qu'entre les individus eux-mêmes. Les droits de l'homme, le droit international, les droits civiques et les lois sur l'égalité et la liberté sont des enjeux centraux. Les débats sur la justice, les droits fondamentaux et l'équité sont omniprésents, notamment en ce qui concerne la lutte contre les inégalités sociales, les discriminations et l'évolution des systèmes juridiques mondiaux. L'accessibilité et l'efficacité des systèmes juridiques sont également des problématiques contemporaines majeures.</p>
-            <div class="info-point">
-                <strong>Point d'information :</strong> Le droit aujourd'hui n'est plus seulement national mais a une dimension internationale, avec des droits humains universels et des conventions internationales qui cherchent à protéger les libertés fondamentales à l'échelle mondiale.
-            </div>
-        </div>
-
-    </div>
-    <div class="bx container-fluid p-3 bg-secondary bg-opacity-10 text-center">
-        <div class="fiche-header pb-4">Cette fiche est conçue pour la révision de bac 2025 !<br>Les contenus vidéo présentés ne m'appartiennent pas. Cette fiche a pour seul objectif de m'aider la préparation au bac ansi que les concours en maths et Physique Chimie 2025 !<br>Pour les personnes qui utilisent cette fiche notée qu'il regroupe l'essentiel mais n'est en aucun cas complet!</p></div>
-        <p>
-        <div class="w-100 d-flex flex-grow-1 justify-content-center align-items-center gap-3"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div></p>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="./script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+    $("#prevfiche").on("click", function () {
+        const $current = $(".fiche.active");
+        const $prev = $current.prevAll(".fiche").first();
+        if ($prev.length) {
+            setActiveFiche($prev);
+            scrollToFiche($prev);
+        }
+    });
+
+    $("#nextfiche").on("click", function () {
+        const $current = $(".fiche.active");
+        const $next = $current.nextAll(".fiche").first();
+        if ($next.length) {
+            setActiveFiche($next);
+            scrollToFiche($next);
+        }
+    });
+
+    $(window).on("scroll", function () {
+        const scrollTop = $(this).scrollTop();
+        let docHeight = $(document).height();
+        let winHeight = $(window).height();
+        let scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
+        $("#scroll-progress-bar").css("width", scrollPercent + "%");
+
+        $fiches.each(function () {
+            const $fiche = $(this);
+            const offsetTop = $fiche.offset().top;
+            const offsetBottom = offsetTop + $fiche.outerHeight();
+
+            if (scrollTop >= offsetTop - 20 && scrollTop < offsetBottom - 20) {
+                setActiveFiche($fiche);
+                return false; // break loop once active one is found
+            }
+        });
+    });
+});
+document.getElementById("print").addEventListener("click", function () {
+    window.print();
+});
+
+function estimateReadingTime(containerId, displayId) {
+    const container = document.getElementById(containerId);
+    const display = document.getElementById(displayId);
+    const wordsPerMinute = 60;
+
+    if (container) {
+        const text = container.innerText || container.textContent;
+        const wordCount = text.trim().split(/\s+/).length;
+        const minutes = Math.ceil(wordCount / wordsPerMinute);
+        
+        display.textContent = `⏱️ Estimation: ${minutes} min`;
+    }
+}
+
+// Run on page load
+window.addEventListener('DOMContentLoaded', () => {
+    estimateReadingTime('fiche-content', 'reading-time');
+});
