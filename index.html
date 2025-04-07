@@ -29,6 +29,85 @@ box-shadow: var(--shadow);
 transition: var(--transition);
 cursor: pointer;
 }
+.recap {
+width: 100%;
+padding: 20px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.recap iframe {
+width: 100%;
+max-width: 600px;
+height: 100%;
+aspect-ratio: 16/9;
+border: none;
+border-radius: 1rem;
+}
+/* Style the container to allow horizontal scrolling */
+.slider-container {
+    width: 100%;
+    overflow-x: auto;              /* Horizontal scrolling */
+    padding: 20px 10px;
+    max-width: 900px;
+}
+
+/* Style the slider itself (the content within the container) */
+.slider {
+    display: flex;
+    gap: 20px;                     /* Space between items */
+    padding: 10px 0;
+    flex-wrap: nowrap;
+}
+
+/* Style each slider item (link) */
+.slider-item {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: var(--radius);  /* Rounded corners */
+    background-color: var(--card-bg);  /* Light gray background */
+    color: var(--text-color);       /* Dark text color */
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover effect for each item */
+.slider-item:hover {
+    background-color: var(--primary-hover);  /* Light blue background on hover */
+    color: var(--bg-color);                  /* White text on hover */
+    transform: translateY(-3px);             /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Subtle shadow on hover */
+}
+
+/* Active state to give a pressed effect when the item is clicked */
+.slider-item:active {
+    transform: translateY(1px);  /* Slightly pressed effect */
+    box-shadow: none;             /* Remove shadow on click */
+}
+
+.search-container {
+display: flex;
+justify-content: center;
+    }
+
+    .search-bar {
+        padding: 10px;
+        width: 250px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        outline: none;
+        transition: var(--transition);
+    }
+
+    .search-bar:focus {
+        border-color: var(--primary-color);
+    }
+@media print {.recap {display: none;}}
 </style>
 </head>
 <body id="fiche-content">
@@ -39,18 +118,38 @@ cursor: pointer;
     <div id="prevfiche" class="bx bx-chevron-up"></div>
     <div id="nextfiche" class="bx bx-chevron-down"></div>
     <div id="activefichedetails" class="bx bx-file"></div>
-    <div id="readaloud" class="bx bx-book-reader"></div>
+    <div id="readaloud" class="bx bx-user-voice"></div>
     <div id="prevspeachtext" class="bx"></div>
     <div class="bx" id="linkurl"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div>
     <div class="bx m-5"></div>
     <h1 class="bx text-center w-100">Philosophie</h1>
+    <div class="search-container bx p-2">
+        <input class="search-bar" type="text" id="search" placeholder="Chercher la fiche...">
+    </div>
+    <div class="bx w-100 d-flex justify-content-center align-items-center">
+        <div class="slider-container">
+            <div class="slider">
+                <a href="#fiche1" class="slider-item">La Conscience</a>
+                <a href="#fiche2" class="slider-item">l'Inconscient</a>
+                <a href="#fiche3" class="slider-item">la Technique</a>
+                <a href="#fiche4" class="slider-item">l'Art</a>
+                <a href="#fiche5" class="slider-item">le Travail</a>
+                <a href="#fiche6" class="slider-item">la Nature</a>
+                <a href="#fiche7" class="slider-item">la Culture</a>
+                <a href="#fiche8" class="slider-item">la Religion</a>
+                <a href="#fiche9" class="slider-item">l'Etat</a>
+                <a href="#fiche10" class="slider-item">le Bonheur</a>
+                <a href="#fiche11" class="slider-item">la liberté</a>
+                <a href="#fiche12" class="slider-item">le Droit</a>
+            </div>
+        </div>
+    </div>
     <div class="fiche">
         <!-- Header -->
         <div class="fiche-header">
             <h3>La Conscience</h3>
             <p class="lead">Exploration du concept de conscience à travers la philosophie.</p>
         </div>
-
         <!-- Section 1: Introduction à la Conscience -->
         <div>
             <h2 class="section-title">Qu'est-ce que la Conscience ?</h2>
@@ -59,6 +158,7 @@ cursor: pointer;
                 <strong>Point d'information :</strong> Selon Descartes, la conscience est au cœur de la réflexion. Pour lui, le fait de douter est une preuve de l'existence de la conscience: "Cogito, ergo sum" ("Je pense, donc je suis").
             </div>
         </div>
+        <div class="recap"><iframe src="https://www.youtube.com/embed/pkeQzlskbwI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
 
         <!-- Section 2: Conscience et Philosophie Moderne -->
         <div>
@@ -900,9 +1000,10 @@ cursor: pointer;
         </div>
 
     </div>
-    <div class="bx container-fluid">
-        <div class="fiche-header">
-            <p class="lead">Ceci est un fiche fait pour la revision de Philosophie!</p>
+    <div class="bx container-fluid p-3 bg-secondary bg-opacity-10 text-center">
+        <div class="fiche-header pb-4">Cette fiche est conçue pour la révision de bac 2025 !<br>Les contenus vidéo présentés ne m'appartiennent pas. Cette fiche a pour seul objectif de m'aider la préparation au bac ansi que les concours en maths et Physique Chimie 2025 !<br>Pour les personnes qui utilisent cette fiche notée qu'il regroupe l'essentiel mais n'est en aucun cas complet!</p></div>
+        <p>
+        <div class="w-100 d-flex flex-grow-1 justify-content-center align-items-center gap-3"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div></p>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="./script.js"></script>
