@@ -227,7 +227,7 @@ $(document).ready(function () {
         if ($fiche && $fiche.length) {
             $fiche.addClass("active");
         }
-        document.title = $fiche.find("h3").text() + " - Philosophie";
+        document.title = $fiche.find("h3").text() + " - " + $("h1").first().text();
         var estimatedcurrentfichereadtime = Math.ceil($fiche.text().trim().split(/\s+/).length / 60);
         document.getElementById("activefichedetails").innerHTML = " " + $fiche.find("h3").text() + " - " + estimatedcurrentfichereadtime + " min";
     }
