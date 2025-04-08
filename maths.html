@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philo</title>
+    
+   <!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Boxicons -->
+<link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" id="theme-style" href="./light.css">
+
+<style>
+#readaloud {
+position: fixed;
+bottom: 130px;
+right: 20px;
+font-size: 26px;
+color: var(--text-color);
+background-color: var(--secondary-color);
+padding: 12px;
+border-radius: 50%;
+box-shadow: var(--shadow);
+transition: var(--transition);
+cursor: pointer;
+}
+.recap {
+width: 100%;
+padding: 20px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.recap iframe {
+width: 100%;
+max-width: 600px;
+height: 100%;
+aspect-ratio: 16/9;
+border: none;
+border-radius: 1rem;
+}
+/* Style the container to allow horizontal scrolling */
+.slider-container {
+    width: 100%;
+    overflow-x: auto;              /* Horizontal scrolling */
+    padding: 20px 10px;
+    max-width: 900px;
+}
+
+/* Style the slider itself (the content within the container) */
+.slider {
+    display: flex;
+    gap: 20px;                     /* Space between items */
+    padding: 10px 0;
+    flex-wrap: nowrap;
+}
+
+/* Style each slider item (link) */
+.slider-item {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: var(--radius);  /* Rounded corners */
+    background-color: var(--card-bg);  /* Light gray background */
+    color: var(--text-color);       /* Dark text color */
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover effect for each item */
+.slider-item:hover {
+    background-color: var(--primary-hover);  /* Light blue background on hover */
+    color: var(--bg-color);                  /* White text on hover */
+    transform: translateY(-3px);             /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Subtle shadow on hover */
+}
+
+/* Active state to give a pressed effect when the item is clicked */
+.slider-item:active {
+    transform: translateY(1px);  /* Slightly pressed effect */
+    box-shadow: none;             /* Remove shadow on click */
+}
+
+.search-container {
+display: flex;
+justify-content: center;
+    }
+
+    .search-bar {
+        padding: 10px;
+        width: 250px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        outline: none;
+        transition: var(--transition);
+    }
+
+    .search-bar:focus {
+        border-color: var(--primary-color);
+    }
+@media print {.recap {display: none;}}
+</style>
+</head>
+<body id="fiche-content">
+    <div id="scroll-progress-bar" class="bx"></div>
+    <div id="reading-time" class="bx mb-3"></div>
+    <div id="print" class="bx bx-printer"></div>
+    <div id="theme-toggle" class="bx bx-sun"></div>
+    <div id="prevfiche" class="bx bx-chevron-up"></div>
+    <div id="nextfiche" class="bx bx-chevron-down"></div>
+    <div id="activefichedetails" class="bx bx-file"></div>
+    <div id="readaloud" class="bx bx-user-voice"></div>
+    <div id="prevspeachtext" class="bx"></div>
+    <div class="bx" id="linkurl"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div>
+    <div class="bx m-5"></div>
+    <h1 class="bx text-center w-100">Maths</h1>
+    <div class="search-container bx p-2">
+        <input class="search-bar" type="text" id="search" placeholder="Chercher la fiche...">
+    </div>
+    <div class="bx w-100 d-flex justify-content-center align-items-center">
+        <div class="slider-container">
+            <div class="slider">
+                <a href="#fiche1" class="slider-item">Les Suites</a>
+            </div>
+        </div>
+    </div>
+    <div class="fiche">
+        <div class="fiche-header">
+          <h3>Les Suites</h3>
+          <p>Suites arithmétique – géométrique</p>
+        </div>
+      
+        <div class="section-title">Définition générale</div>
+        <div class="info-point">
+          Une <span>suite</span> est une fonction définie sur 
+          <math class="highlight"><mi>&#x2115;</mi></math> (ensemble des entiers naturels) qui associe à tout entier <math class="highlight"><mi>n</mi></math> un réel <math class="highlight"><msub><mi>u</mi><mi>n</mi></msub></math>.
+        </div>
+      
+        <div class="section-title">Suite arithmétique</div>
+        <div class="info-point">
+        <strong>Définition :</strong> 
+        <p>Une suite <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mi>n</mi></msub></math> est <span class="highlight">arithmétique</span> s’il existe un réel <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi></math> tel que :</p>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <msub><mi>u</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub>
+          <msub><mi>&nbsp;=&nbsp;</mi></msub>
+          <msub><mi>u</mi><mi>n</mi></msub><msub><mi>+</mi></msub><msub><mi>r</mi></msub>
+        </math>
+        
+        </div>
+        <p>
+          
+        </p>
+      
+        <p>La formule explicite d'une suite arithmétique est donnée par :</p>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <msub><mi>u</mi><mn>n</mn></msub> <msub><mi>&nbsp;=&nbsp;u</mi><mn>0</mn></msub><msub><mi>&nbsp;+&nbsp;</mi></msub><msub><mi>n</mi></msub><msub><mi>&nbsp;&#183;&nbsp;</mi></msub><msub><mi>r</mi></msub>
+        </math>
+
+        <p><br>avec: <br>
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mn>n</mn></msub></math> est le terme de rang <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math>,<br><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mn>0</mn></msub></math> est le premier terme de la suite,<br><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi></math> est la raison de la suite.<br><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>n</mi></msub></math> est un entier naturel.</p>
+      
+        <div class="exemple"><p>Exemple :</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <msub><mi>u</mi><mn>0</mn></msub><msub><mi>&nbsp;=&nbsp;</mi></msub> <msub><mi>5</mi></msub> 
+            </math>, &nbsp;
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mi>r</mi><mn>&nbsp;=&nbsp;</mn><mn>2</mn>
+            </math> ⇒ 
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <msub><mn>u</mn><mi>n</mi></msub><msub><mi>&nbsp;=&nbsp;</mi></msub> <msub><mi>5</mi></msub><msub><mn>&nbsp;+&nbsp;</mn></msub><msub><mn>2</mn></msub><msub><mn>n</mn></msub>
+            </math>
+            
+        </div>
+      
+        <div class="section-title">Suite géométrique</div>
+        <div class="info-point">
+            <strong>Définition :</strong> 
+            <p>Une suite <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mi>n</mi></msub></math> est <span class="highlight">géométrique</span> s’il existe un réel <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>q</mi></math> tel que :</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <msub><mi>u</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub>
+                <mo>=</mo>
+                <msub><mi>u</mi><mi>n</mi></msub><mo>&#183;</mo><mi>q</mi>
+            </math>
+        </div>
+        
+        <p>La formule explicite d'une suite géométrique est donnée par :</p>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <msub><mi>u</mi><mn>n</mn></msub><msub><mi>&nbsp;=&nbsp;</mi></msub><msub><mi>u</mi><mn>0</mn></msub> <mo>&#183;</mo> <msup><mi>q</mi><mi>n</mi></msup>
+        </math>
+
+        <p><br>avec: <br>
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mn>n</mn></msub></math> est le terme de rang <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math>,<br>
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>u</mi><mn>0</mn></msub></math> est le premier terme de la suite,<br>
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>q</mi></math> est le quotient de la suite.<br><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>n</mi></msub></math> est un entier naturel.</p>
+
+        
+            <div class="exemple"><p>Exemple :</p>
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <msub><mi>u</mi><mn>0</mn></msub><msub><mi>&nbsp;=&nbsp;</mi></msub> <msub><mi>5</mi></msub> 
+                </math>, &nbsp;
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mi>q</mi><mn>&nbsp;=&nbsp;</mn><mn>2</mn>
+                </math> ⇒ 
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <msub><mn>u</mn><mi>n</mi></msub><msub><mi>&nbsp;=&nbsp;</mi></msub> <msub><mi>5</mi></msub><msub><mn>&nbsp;×&nbsp;</mn></msub><msup><mi>2</mi><mi>n</mi></msup>
+                </math>
+                
+            </div><div class="section-title">Suite récurrente</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est dite récurrente si chaque terme est défini en fonction de termes précédents. Exemple : 
+                    <code class="highlight">u<sub>n+1</sub> = f(u<sub>n</sub>)</code>.
+                </p>
+            </div>
+            
+            <div class="section-title">Suite convergente</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite converge si elle tend vers une valeur limite lorsque <code class="highlight">n</code> tend vers l'infini. Si <code class="highlight">lim<sub>n→∞</sub> u<sub>n</sub> = L</code>, alors la suite est convergente et <code class="highlight">L</code> est la limite.</p>
+            </div>
+            
+            <div class="section-title">Suite divergente</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est divergente si elle n'a pas de limite finie à mesure que <code class="highlight">n</code> tend vers l'infini. Cela inclut les suites qui tendent vers <code class="highlight">+∞</code>, <code class="highlight">-∞</code>, ou oscillent.</p>
+            </div>
+            
+            <div class="section-title">Suite bornée</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est bornée si il existe un réel <code class="highlight">M</code> tel que <code class="highlight">|u<sub>n</sub>| ≤ M</code> pour tout <code class="highlight">n</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite strictement croissante</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est strictement croissante si <code class="highlight">u<sub>n+1</sub> > u<sub>n</sub></code> pour tout <code class="highlight">n</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite strictement décroissante</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est strictement décroissante si <code class="highlight">u<sub>n+1</sub> < u<sub>n</sub></code> pour tout <code class="highlight">n</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite stationnaire</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est stationnaire (ou constante) si tous ses termes sont égaux, c'est-à-dire <code class="highlight">u<sub>n</sub> = u<sub>0</sub></code> pour tout <code class="highlight">n</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite arithmétique</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est arithmétique si chaque terme est égal au précédent plus une constante <code class="highlight">r</code> : <code class="highlight">u<sub>n+1</sub> = u<sub>n</sub> + r</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite géométrique</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est géométrique si chaque terme est égal au précédent multiplié par une constante <code class="highlight">q</code> : <code class="highlight">u<sub>n+1</sub> = u<sub>n</sub> × q</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite de Fibonacci</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite définie par <code class="highlight">u<sub>0</sub> = 0</code>, <code class="highlight">u<sub>1</sub> = 1</code>, et <code class="highlight">u<sub>n+2</sub> = u<sub>n+1</sub> + u<sub>n</sub></code> pour tout <code class="highlight">n ≥ 0</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite arithmético-géométrique</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite qui combine les deux propriétés arithmétiques et géométriques. Par exemple : 
+                    <code class="highlight">u<sub>n+1</sub> = u<sub>n</sub> + r × q<sup>n</sup></code>, où la raison varie en fonction de <code class="highlight">n</code>.
+                </p>
+            </div>
+            
+            <div class="section-title">Suite exacte</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est exacte si elle satisfait à une relation de récurrence bien définie, souvent utilisée dans les mathématiques pures et les équations différentielles.</p>
+            </div>
+            
+            <div class="section-title">Suite alternée</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite où les termes changent de signe à chaque étape, par exemple : <code class="highlight">u<sub>n</sub> = (-1)<sup>n</sup></code>.</p>
+            </div>
+            
+            <div class="section-title">Suite Cauchy</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est Cauchy si, pour tout <code class="highlight">ε > 0</code>, il existe un <code class="highlight">N</code> tel que <code class="highlight">|u<sub>n</sub> - u<sub>m</sub>| < ε</code> pour tout <code class="highlight">n, m ≥ N</code>. Cela signifie que les termes deviennent arbitrairement proches entre eux.</p>
+            </div>
+            
+            <div class="section-title">Suite majorée et minorée</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est majorée (respectivement minorée) s'il existe un réel <code class="highlight">M</code> (respectivement <code class="highlight">m</code>) tel que <code class="highlight">u<sub>n</sub> ≤ M</code> (respectivement <code class="highlight">u<sub>n</sub> ≥ m</code>) pour tout <code class="highlight">n</code>.</p>
+            </div>
+            
+            <div class="section-title">Suite d'uniforme</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une suite est uniforme si elle converge uniformément vers une fonction ou une valeur.</p>
+            </div>
+            
+            <div class="section-title">Suite et série</div>
+            <div class="info-point">
+                <strong>Définition :</strong>
+                <p>Une série est la somme infinie des termes d'une suite, souvent notée 
+                    <code class="highlight">∑<sub>n=0</sub><sup>∞</sup> u<sub>n</sub></code>. Une suite convergente peut entraîner une série convergente, et inversement.
+                </p>
+            </div>
+            
+            
+      
+    </div>
+    <div class="bx container-fluid p-3 bg-secondary bg-opacity-10 text-center">
+        <div class="fiche-header pb-4">Cette fiche est conçue pour la révision de bac 2025 !<br>Les contenus vidéo présentés ne m'appartiennent pas. Cette fiche a pour seul objectif de m'aider la préparation au bac ansi que les concours en maths et Physique Chimie 2025 !<br>Pour les personnes qui utilisent cette fiche notée qu'il regroupe l'essentiel mais n'est en aucun cas complet!</p></div>
+        <p>
+        <div class="w-100 d-flex flex-grow-1 justify-content-center align-items-center gap-3"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div></p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

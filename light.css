@@ -60,7 +60,7 @@ body {
 }
 
 .highlight {
-    background-color: #f7f7f7;
+    background-color: #f3f6ff;
     color: var(--primary-color);
     padding: 4px 8px;
     border-radius: 5px;
@@ -349,7 +349,7 @@ body {
     }
 
     .highlight {
-        background-color: #fffacc !important;
+        background-color: #dddddd !important;
         color: #333 !important;
     }
 
