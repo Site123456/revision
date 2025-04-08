@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Philo</title>
-    
+    <title>Physique-Chimie 2025</title>
+    <meta name="robots" content="allow">
+    <meta name="description" content="Fiches de révision pour le Bac de Physique-Chimie. Accédez à des résumés clairs et concis sur les thèmes essentiels.">
    <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
@@ -94,6 +95,14 @@ border-radius: 1rem;
 display: flex;
 justify-content: center;
     }
+        .formula {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 300;
+        }
+        .alert-info {
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
 
     .search-bar {
         padding: 10px;
@@ -103,11 +112,15 @@ justify-content: center;
         outline: none;
         transition: var(--transition);
     }
-
+    svg {
+        max-width: 100%;
+        height: auto;
+        border-radius: 1rem;
+    }
     .search-bar:focus {
         border-color: var(--primary-color);
     }
-@media print {.recap {display: none;}}
+@media print {.recap, .pnone {display: none;}}
 </style>
 </head>
 <body id="fiche-content">
@@ -128,71 +141,1073 @@ justify-content: center;
     </div>
     <div class="bx w-100 d-flex justify-content-center align-items-center">
         <div class="slider-container">
-            <div class="slider">
-                <a href="#fiche1" class="slider-item">Les Lois de Newton</a>
+            <div class="slider"><a href="#fiche1" class="slider-item">Table de matière</a>
+                <a href="#fiche2" class="slider-item">Les Lois de Newton</a>
+                <a href="#fiche3" class="slider-item">Comprendre le Mouvement</a>
+                <a href="#fiche4" class="slider-item">Forces et Mouvements</a>
+                <a href="#fiche5" class="slider-item">Mouvement en Champ Uniforme</a>
+                <a href="#fiche6" class="slider-item">Les Orbites et Gravité</a>
+                <a href="#fiche7" class="slider-item">Écoulement des Fluides</a>
+                <a href="#fiche8" class="slider-item">Analyser la Composition</a>
+                <a href="#fiche9" class="slider-item">Forces Acides et Bases</a>
+                <a href="#fiche10" class="slider-item">Prédire l'Évolution Chimique</a>
+                <a href="#fiche11" class="slider-item">Modélisation des Réactions</a>
+                <a href="#fiche12" class="slider-item">Synthèse Organique</a>
+                <a href="#fiche13" class="slider-item">Réactions Chimiques en Profondeur</a>
+                <a href="#fiche14" class="slider-item">Contrôler les Réactions</a>
+                <a href="#fiche15" class="slider-item">Bilan d'Énergie</a>
+                <a href="#fiche16" class="slider-item">Les Gaz Parfaits</a>
+                <a href="#fiche17" class="slider-item">Phénomènes Ondulatoires</a>
+                <a href="#fiche18" class="slider-item">La Lumière et les Photons</a>
+                <a href="#fiche19" class="slider-item">Systèmes Électriques</a>
+                
             </div>
         </div>
+    </div>
+    <div class="fiche pnone">
+        <div class="fiche-header">
+            <h3>Table de matière</h3>
+            <p>Acces rapide aux themes</p>
+        </div>
+        <h5 class="section-title">A - Mouvements et Interactions</h5>
+        <ol> 
+            <li><strong><a href="#fiche2">Les lois de Newton</a></strong> : Les principes de base du mouvement et des forces.</li>
+            <li><strong><a href="#fiche3">Comprendre le Mouvement</a></strong> : Analyse des mouvements (vitesse, trajectoire, accélération).</li>
+            <li><strong><a href="#fiche4">Forces et Mouvements</a></strong> : Comment les forces influencent le mouvement d'un objet.</li>
+            <li><strong><a href="#fiche5">Mouvement en Champ Uniforme</a></strong> : Étude des mouvements dans des champs constants.</li>
+            <li><strong><a href="#fiche6">Les Orbites et Gravité</a></strong> : Mouvements circulaires sous l'effet de la gravitation.</li>
+            <li><strong><a href="#fiche7">Écoulement des Fluides</a></strong> : Modélisation des mouvements de fluides.</li>
+        </ol>
+        
+        <h5 class="section-title">B - Transformation de la Matière</h5>
+        <ol>
+            <li><strong><a href="#fiche8">Analyser la Composition</a></strong> : Techniques pour étudier la structure d'un système.</li>
+            <li><strong><a href="#fiche9">Forces Acides et Bases</a></strong> : Comprendre l'intensité des acides et des bases.</li>
+            <li><strong><a href="#fiche10">Prédire l'Évolution Chimique</a></strong> : Déterminer l'état final d'une réaction chimique.</li>
+            <li><strong><a href="#fiche11">Modélisation des Réactions</a></strong> : Analyser les changements au cours du temps dans les réactions chimiques.</li>
+            <li><strong><a href="#fiche12">Synthèse Organique</a></strong> : Stratégies pour créer des composés organiques.</li>
+            <li><strong><a href="#fiche13">Réactions Chimiques en Profondeur</a></strong> : Approfondissement des modèles des réactions chimiques.</li>
+            <li><strong><a href="#fiche14">Contrôler les Réactions</a></strong> : Influence des conditions externes sur le sens d'une réaction chimique.</li>
+        </ol>
+        
+        <h5 class="section-title">C - L'Énergie et ses Transferts</h5>
+        <ol>
+            <li><strong><a href="#fiche15">Bilan d'Énergie</a></strong> : Application du premier principe de la thermodynamique.</li>
+            <li><strong><a href="#fiche16">Les Gaz Parfaits</a></strong> : Modélisation d'un gaz idéal et ses propriétés thermodynamiques.</li>
+        </ol>
+        
+        <h5 class="section-title">D - Ondes et Signaux</h5>
+        <ol>
+            <li><strong><a href="#fiche17">Phénomènes Ondulatoires</a></strong> : Caractéristiques des ondes et leur comportement.</li>
+            <li><strong><a href="#fiche18">La Lumière et les Photons</a></strong> : Comprendre la lumière comme un flux de photons.</li>
+            <li><strong><a href="#fiche19">Systèmes Électriques</a></strong> : Analyse dynamique des circuits électriques.</li>
+        </ol>                
+
+
     </div><div class="fiche">
         <div class="fiche-header">
             <h3>Les Lois de Newton</h3>
             <p>Comprendre les trois lois du mouvement et leurs applications en mécanique</p>
         </div>
+        
+        <div class="recap mb-4">
+            <iframe class="w-100" height="315" src="https://www.youtube.com/embed/dhVXGV_j6Sw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
     
         <div class="section-title">1. Première Loi de Newton</div>
-        <p>La première loi de Newton, également appelée principe d'inertie, affirme qu'un objet au repos reste au repos et qu'un objet en mouvement poursuit sa trajectoire à une vitesse constante et en ligne droite, à moins qu'une force nette ne vienne perturber cet état.</p>
+        <p>La première loi de Newton, aussi appelée principe d'inertie, stipule qu'un objet au repos reste au repos, et qu'un objet en mouvement poursuit sa trajectoire à une vitesse constante et en ligne droite, à moins qu'une force nette ne vienne perturber cet état.</p>
+        
+        <div class="highlight bg-light p-3 border rounded">Exemple : Un livre posé sur une table ne bouge pas tant qu'une force n'est pas appliquée.</div>
+        
+        <div class="section-title mt-4">2. Deuxième Loi de Newton</div>
+        <p>La deuxième loi de Newton se formule ainsi : <span class="formula">F = m × a</span>, où <span class="formula">F</span> est la force nette exercée sur l'objet, <span class="formula">m</span> sa masse, et <span class="formula">a</span> son accélération.</p>
     
-        <div class="highlight">Exemple : Un livre posé sur une table ne bouge pas tant qu'une force n'est pas appliquée.</div>
-    
-        <div class="section-title">2. Deuxième Loi de Newton</div>
-        <p>La deuxième loi de Newton est l'une des équations fondamentales de la dynamique. Elle s'exprime par la formule suivante : 
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <msup>
-                <mo>F</mo>
-            </msup>
-            <mi>=</mi>
-            <mi>&nbsp;m</mi>
-            <mo>.</mo>
-            <mi>a</mi>
-        </math>, où <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mi>F</mi>
-        </math> représente la force nette exercée sur un objet, <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mi>m</mi>
-        </math> sa masse, et <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mi>a</mi>
-        </math> son accélération.</p>
-    
-        <div class="info-point">
+        <div class="info-point alert alert-info mt-3">
             <strong>Important :</strong> Plus la masse d'un objet est grande, plus il est difficile de modifier sa vitesse (accélération) avec une force donnée.
         </div>
     
-        <div class="section-title">3. Troisième Loi de Newton</div>
-        <p>La troisième loi de Newton stipule que : "Pour chaque action, il existe une réaction égale et opposée". Autrement dit, si un objet exerce une force sur un autre, celui-ci réagira avec une force de même intensité mais dans la direction opposée. Cette loi se formule ainsi : 
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mi>F</mi>
-            <sub>
-                <mi>12</mi>
-            </sub>
-            <mo>=</mo>
-            <mo>-</mo>
-            <mi>F</mi>
-            <sub>
-                <mi>21</mi>
-            </sub>
-        </math>, où <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mi>F</mi>
-            <sub>
-                <mi>12</mi>
-            </sub>
-        </math> est la force exercée par l'objet 1 sur l'objet 2, et <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <mi>F</mi>
-            <sub>
-                <mi>21</mi>
-            </sub>
-        </math> est la force exercée par l'objet 2 sur l'objet 1.</p>
+        <div class="section-title mt-4">3. Troisième Loi de Newton</div>
+        <p>La troisième loi de Newton stipule que : "Pour chaque action, il existe une réaction égale et opposée". Cette loi se formule ainsi : <span class="formula">F<sub>12</sub> = -F<sub>21</sub></span>, où <span class="formula">F<sub>12</sub></span> est la force exercée par l'objet 1 sur l'objet 2, et <span class="formula">F<sub>21</sub></span> est la force exercée par l'objet 2 sur l'objet 1.</p>
     </div>
     
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Comprendre le Mouvement</h3>
+            <p>Analyse des mouvements (vitesse, trajectoire, accélération)</p>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="auto" height="auto" style="max-width: 400px;width:100%"   class="mx-auto d-block">
+            <!-- Trajectoire de l'objet -->
+            <path d="M50 350 Q150 200 250 150 Q350 100 450 150 Q550 200 550 350" 
+                  fill="transparent" stroke="blue" stroke-width="2" />
+            
+            <!-- Objet en mouvement (représenté par un cercle) -->
+            <circle cx="50" cy="350" r="10" fill="red" />
+            <circle cx="250" cy="150" r="10" fill="red" />
+            <circle cx="450" cy="150" r="10" fill="red" />
+            
+            <!-- Vitesse -->
+            <line x1="60" y1="350" x2="150" y2="220" stroke="green" stroke-width="2" />
+            <text x="160" y="220" font-size="12" fill="green">Vitesse</text>
+    
+            <!-- Accélération -->
+            <line x1="150" y1="200" x2="250" y2="150" stroke="orange" stroke-width="2" stroke-dasharray="5,5" />
+            <text x="260" y="150" font-size="12" fill="orange">Accélération</text>
+    
+            <!-- Axes -->
+            <line x1="50" y1="350" x2="550" y2="350" stroke="currentColor" stroke-width="1" />
+            <line x1="50" y1="350" x2="50" y2="50" stroke="currentColor" stroke-width="1" />
+            <text x="555" y="365" font-size="14" fill="currentColor">Temps</text>
+            <text x="0" y="65" font-size="14" fill="currentColor" transform="rotate(-90 15,45)">Position</text>
+            
+            <!-- Titre -->
+            <text x="250" y="30" font-size="18" fill="currentColor" text-anchor="middle">Comprendre le Mouvement</text>
+        </svg>
+        <div class="section-title">1. Introduction</div>
+        <p>Le mouvement décrit le changement de position d'un objet dans le temps.</p>
+
+        <div class="section-title">2. Vitesse</div>
+        <p>La vitesse est le taux de variation de la position par rapport au temps :</p>
+        <p><strong>v = Δx / Δt</strong></p>
+
+        <div class="section-title">3. Accélération</div>
+        <p>L'accélération est le taux de variation de la vitesse :</p>
+        <p><strong>a = Δv / Δt</strong></p>
+
+        <div class="section-title">4. Trajectoire</div>
+        <p>La trajectoire est l'itinéraire suivi par un objet en mouvement. Une relation simplifiée est :</p>
+        <p><strong>x = x₀ + v₀t + 1/2 at²</strong></p>
+    </div>
+
+    <!-- Forces et Mouvements -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Forces et Mouvements</h3>
+            <p>Comment les forces influencent le mouvement d'un objet.</p>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" style="max-width: 400px;width:100%"  viewBox="0 0 800 400">
+            <!-- Moon -->
+            <circle cx="150" cy="200" r="50" fill="#d9d9d9" />
+            <circle cx="130" cy="180" r="10" fill="#c0c0c0" />
+            <circle cx="170" cy="220" r="8" fill="#c0c0c0" />
+            <circle cx="140" cy="230" r="6" fill="#c0c0c0" />
+            <text x="120" y="270" font-family="Arial" font-size="16" fill="currentColor">Lune</text>
+          
+            <!-- Earth -->
+            <circle cx="650" cy="200" r="100" fill="#4caf50" />
+            <circle cx="650" cy="200" r="100" fill="url(#earth-pattern)" />
+            <text x="630" y="320" font-family="Arial" font-size="16" fill="currentColor">Terre</text>
+          
+            <!-- Force Vectors -->
+            <line x1="200" y1="200" x2="600" y2="200" stroke="currentColor" stroke-dasharray="5,5" stroke-width="2" />
+            <line x1="200" y1="200" x2="150" y2="150" stroke="green" stroke-width="3" marker-end="url(#arrowhead)" />
+            <line x1="600" y1="200" x2="650" y2="150" stroke="red" stroke-width="3" marker-end="url(#arrowhead)" />
+          
+            <!-- Labels -->
+            <text x="10" y="10" font-family="Arial" font-size="14" fill="currentColor"><sup></sup> F<sub>Lune/Terre</sub> = F<sub>Terre/Lune</sub></text>
+          
+            <!-- Arrowhead Marker -->
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="currentColor" />
+              </marker>
+            </defs>
+          </svg>
+        
+        
+
+        <div class="section-title">1. Loi de la Gravité</div>
+        <p>La gravité est une force attractive entre deux corps masses, donnée par :</p>
+        <p><strong>F = G * m₁ * m₂ / r²</strong></p>
+
+        <div class="section-title">2. Forces de Frottement</div>
+        <p>La force de frottement est :</p>
+        <p><strong>Fₓ = μ * N</strong></p>
+
+        <div class="section-title">3. Loi de Newton</div>
+        <p>La deuxième loi de Newton indique que la force est égale à la masse multipliée par l'accélération :</p>
+        <p><strong>F = m * a</strong></p>
+    </div>
+
+    <!-- Mouvement en Champ Uniforme -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Mouvement en Champ Uniforme</h3>
+            <p>Étude des mouvements dans des champs constants.</p>
+        </div>
+        <svg width="auto" height="auto" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fond -->
+            <rect width="100%" height="200" fill="#f0f8ff" />
+          
+            <!-- Champ uniforme (flèches) -->
+            <line x1="50" y1="30" x2="50" y2="170" stroke="#1e90ff" stroke-width="2" />
+            <polygon points="45,40 50,30 55,40" fill="#1e90ff" />
+            
+            <line x1="100" y1="30" x2="100" y2="170" stroke="#1e90ff" stroke-width="2" />
+            <polygon points="95,40 100,30 105,40" fill="#1e90ff" />
+            
+            <line x1="150" y1="30" x2="150" y2="170" stroke="#1e90ff" stroke-width="2" />
+            <polygon points="145,40 150,30 155,40" fill="#1e90ff" />
+          
+            <!-- Objet (cercle en mouvement) -->
+            <circle cx="50" cy="100" r="10" fill="red" />
+            <text x="65" y="120" fill="black" font-size="12" dominant-baseline="middle">Objet</text>
+          
+            <!-- Trajectoire -->
+            <line x1="60" y1="100" x2="90%" y2="100" stroke="black" stroke-dasharray="5,5" />
+            <text x="200" y="90" fill="black" font-size="12">Trajectoire rectiligne</text>
+          
+            <!-- Vecteur vitesse -->
+            <line x1="50" y1="100" x2="100" y2="100" stroke="green" stroke-width="2" />
+            <polygon points="95,95 100,100 95,105" fill="green" />
+            <text x="70" y="85" fill="green" font-size="12">v</text>
+          </svg>
+        <div class="section-title">1. Accélération Constante</div>
+        <p>Dans un champ uniforme, l'accélération est constante. Par exemple, pour la chute libre, l'accélération due à la gravité est :</p>
+        <p><strong>a = g</strong></p>
+
+        <div class="section-title">2. Vitesse et Déplacement</div>
+        <p>La vitesse dans un champ uniforme est donnée par :</p>
+        <p><strong>v = v₀ + g * t</strong></p>
+    </div>
+
+    <!-- Les Orbites et Gravité -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Les Orbites et Gravité</h3>
+            <p>Mouvements circulaires sous l'effet de la gravitation.</p>
+        </div>
+        <svg width="auto" height="400" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fond -->
+            <rect width="100%" height="400" fill="#f0f8ff" />
+          
+            <!-- Astre central (exemple : Terre) -->
+            <circle cx="200" cy="200" r="40" fill="#1e90ff" />
+            <text x="180" y="195" fill="white" font-size="14" font-weight="bold">Astre</text>
+          
+            <!-- Orbite circulaire -->
+            <circle cx="200" cy="200" r="120" fill="none" stroke="gray" stroke-dasharray="5,5" />
+            <text x="250" y="80" fill="black" font-size="12">Orbite</text>
+          
+            <!-- Satellite ou corps céleste -->
+            <circle cx="320" cy="200" r="10" fill="red" />
+            <text x="330" y="200" fill="black" font-size="12" dominant-baseline="middle">Satellite</text>
+          
+            <!-- Force gravitationnelle (flèche vers l'astre) -->
+            <line x1="320" y1="200" x2="200" y2="200" stroke="blue" stroke-width="2" />
+            <polygon points="205,195 200,200 205,205" fill="blue" />
+          
+        </svg>
+        <div class="section-title">1. Loi de la Gravitation Universelle</div>
+        <p>La force gravitationnelle entre deux objets est donnée par :</p>
+        <p><strong>F = G * m₁ * m₂ / r²</strong></p>
+
+        <div class="section-title">2. Vitesse Orbitaire</div>
+        <p>La vitesse nécessaire pour maintenir un objet en orbite est :</p>
+        <p><strong>v = √(G * M / r)</strong></p>
+    </div>
+
+    <!-- Écoulement des Fluides -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Écoulement des Fluides</h3>
+            <p>Modélisation des mouvements de fluides.</p>
+        </div>
+        <svg width="auto" height="200" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fond -->
+            <rect width="100%" height="300" style="width:100%" fill="#fff0ff" />
+          
+            <!-- Conduite -->
+            <rect x="-4" y="100" width="120%" height="200" fill="#f0f8ff" stroke="black" stroke-width="2" stroke-dasharray="200, 100, 0, 0" />
+            <text x="200" y="95" fill="black" font-size="14">Conduite (ici : une riviere)</text>
+          
+            <!-- Lignes d'écoulement -->
+            <path d="M 60 120 C 100 110, 150 110, 190 120 S 300 130, 440 120" 
+                  fill="none" stroke="blue" stroke-width="2" />
+            <path d="M 60 140 C 100 130, 150 130, 190 140 S 300 150, 440 140" 
+                  fill="none" stroke="blue" stroke-width="2" />
+            <path d="M 60 160 C 100 150, 150 150, 190 160 S 300 170, 440 160" 
+                  fill="none" stroke="blue" stroke-width="2" />
+          
+            <!-- Vecteurs vitesse -->
+            <line x1="100" y1="140" x2="120" y2="140" stroke="green" stroke-width="2" />
+            <polygon points="115,135 120,140 115,145" fill="green" />
+            <line x1="200" y1="140" x2="220" y2="140" stroke="green" stroke-width="2" />
+            <polygon points="215,135 220,140 215,145" fill="green" />
+            <line x1="300" y1="140" x2="320" y2="140" stroke="green" stroke-width="2" />
+            <polygon points="315,135 320,140 315,145" fill="green" />
+            <line x1="400" y1="140" x2="420" y2="140" stroke="green" stroke-width="2" />
+            <polygon points="415,135 420,140 415,145" fill="green" />
+          
+            <!-- Annotation : Débit -->
+            <text x="250" y="180" fill="black" font-size="12">Débit constant</text>
+        </svg>
+
+        <div class="section-title">1. Introduction à l'Écoulement des Fluides</div>
+        <p>L'écoulement des fluides dépend de leur viscosité et de la pression appliquée sur eux.</p>
+
+        <div class="section-title">2. Loi de Darcy pour les Fluides</div>
+        <p>La loi de Darcy décrit l'écoulement laminaire des fluides à travers des milieux poreux :</p>
+        <p><strong>Q = - k * A * (ΔP / L)</strong></p>
+
+        <div class="section-title">3. Équation de Continuité</div>
+        <p>L'équation de continuité décrit la conservation du flux :</p>
+        <p><strong>A₁ * v₁ = A₂ * v₂</strong></p>
+    </div>
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Analyser la Composition</h3>
+            <p>Techniques pour étudier la structure d'un système.</p>
+        </div>
+        <div class="recap"><iframe width="560" height="315" src="https://www.youtube.com/watch?v=J8Q24Q2x9d8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <svg  width="100%" height="320" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+
+            <text x="50" y="40" fill="currentColor" font-size="18" font-weight="bold">Analyser la Composition</text>
+          
+            <!-- Étape 1 : Système à analyser -->
+            <rect x="50" y="80" width="150" height="50" fill="#d3d3d3" stroke="black" stroke-width="2" />
+            <text x="60" y="110" fill="black" font-size="14">Système à analyser</text>
+          
+            <!-- Flèche vers Méthodes physiques -->
+            <line x1="200" y1="105" x2="300" y2="105" stroke="currentColor" stroke-width="2" marker-end="url(#arrowhead)" />
+            
+            <!-- Étape 2 : Méthodes physiques -->
+            <rect x="225" y="80" width="150" height="50" fill="#add8e6" stroke="black" stroke-width="2" />
+            <text x="235" y="100" fill="black" font-size="14">Méthodes physiques</text>
+            <text x="235" y="115" fill="black" font-size="12">(Spectroscopie, etc.)</text>
+          
+            <!-- Flèche vers Méthodes chimiques -->
+            <line x1="200" y1="155" x2="300" y2="155" stroke="currentColor" stroke-width="2" marker-end="url(#arrowhead)" />
+          
+            <!-- Étape 3 : Méthodes chimiques -->
+            <rect x="225" y="130" width="150" height="50" fill="#90ee90" stroke="black" stroke-width="2" />
+            <text x="235" y="150" fill="black" font-size="14">Méthodes chimiques</text>
+            <text x="235" y="165" fill="black" font-size="12">(Réactions, etc.)</text>
+          
+            <!-- Flèche vers Résultats -->
+            <line x1="200" y1="155" x2="200" y2="250" stroke="currentColor" stroke-width="2" marker-end="url(#arrowhead)" />
+          
+            <!-- Étape 4 : Résultats -->
+            <rect x="150" y="250" width="160" height="60" fill="#ffd700" stroke="black" stroke-width="2" />
+            <text x="160" y="280" fill="black" font-size="14">Résultats : Structure</text>
+            <text x="160" y="295" fill="black" font-size="12">(Espèces chimiques, etc.)</text>
+          
+            <!-- Définition de la flèche -->
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+              </marker>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- Forces Acides et Bases -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Forces Acides et Bases</h3>
+            <p>Comprendre l'intensité des acides et des bases.</p>
+        </div>
+        <svg width="100%" height="150" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fond -->
+            <rect width="100%" height="150" fill="#f0f8ff"/>
+          
+            <!-- Échelle de pH -->
+            <line x1="10%" y1="80" x2="90%" y2="80" stroke="black" stroke-width="2" />
+            
+            <!-- Marqueurs pH -->
+            <text x="10%" y="100" fill="black">0</text>
+            <text x="50%" y="100" fill="black">7</text>
+            <text x="90%" y="100" fill="black">14</text>
+          
+            <!-- Zones colorées -->
+            <rect x="10%" y="60" width="30%" height="20" fill="#ff4500" opacity="0.7"/>
+            <rect x="40%" y="60" width="20%" height="20" fill="#ff8c00" opacity="0.7"/>
+            <rect x="60%" y="60" width="30%" height="20" fill="#1e90ff" opacity="0.7"/>
+          
+
+            <text x="20%" y="75" fill="black" font-size="12">Acides</text>
+            <text x="48%" y="75" fill="black" font-size="12">Neutre</text>
+            <text x="76%" y="75" fill="black" font-size="12">Bases</text>
+          </svg>
+        <div class="section-title">1. Échelle de pH</div>
+        <p>Le pH mesure l'intensité acide ou basique d'une solution. Il est défini comme :</p>
+        <p><strong>pH = -log[H⁺]</strong></p>
+
+        <div class="section-title">2. Forces Acides et Bases</div>
+        <p>Les acides sont des donneurs de protons (H⁺), tandis que les bases sont des accepteurs de protons. L'intensité est mesurée par la constante d'acidité (Ka) :</p>
+        <p><strong>Ka = [H⁺][A⁻] / [HA]</strong></p>
+
+        <div class="section-title">3. Forces de Lewis</div>
+        <p>Les acides et bases de Lewis sont définis comme des acceptants et donneurs de paires d'électrons, respectivement.</p>
+    </div>
+
+    <!-- Prédire l'Évolution Chimique -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Prédire l'Évolution Chimique</h3>
+            <p>Déterminer l'état final d'une réaction chimique.</p>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" width="100%" height="auto" style="max-width: 400px;">
+                <!-- Fond adaptable blanc/noir -->
+                <rect width="100%" height="100%" fill="transparent"/>
+                
+                <!-- Flèches d'évolution -->
+                <path d="M50,100 Q150,50 250,100" fill="none" stroke="currentColor" stroke-width="3"/>
+                
+                <!-- États chimiques -->
+                <circle cx="50" cy="100" r="20" fill="blue" fill-opacity="0.5"/>
+                <circle cx="250" cy="100" r="20" fill="green" fill-opacity="0.5"/>
+                
+                <!-- Texte explicatif -->
+                <text x="150" y="180" text-anchor="middle" font-size="12" fill="currentColor">
+                Évolution vers l'équilibre (K = [produits]/[réactifs])
+                </text>
+            </svg>
+        </div>
+        <div class="section-title">1. Équilibre Chimique</div>
+        <p>Les réactions chimiques tendent à atteindre un état d'équilibre. À cet équilibre, la vitesse de la réaction directe est égale à celle de la réaction inverse.</p>
+        <p>L'équilibre est décrit par la constante d'équilibre (K) :</p>
+        <p><strong>K = [produits] / [réactifs]</strong></p>
+
+        <div class="section-title">2. Principe de Le Chatelier</div>
+        <p>Le principe de Le Chatelier prédit comment un système chimique réagit aux changements des conditions (température, pression, concentration).</p>
+    </div>
+
+    <!-- Modélisation des Réactions -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Modélisation des Réactions</h3>
+            <p>Analyser les changements au cours du temps dans les réactions chimiques.</p>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="auto" style="max-width: 400px;">
+                <!-- Fond -->
+                <rect width="100%" height="100%" fill="#f9f9f9" />
+            
+                <!-- Titre -->
+                <text x="50%" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#333">
+                Exemple d'un des Réactions Chimiques
+                </text>
+            
+                <!-- Axes -->
+                <line x1="50" y1="250" x2="350" y2="250" stroke="#333" stroke-width="2" />
+                <line x1="50" y1="250" x2="50" y2="50" stroke="#333" stroke-width="2" />
+            
+                <!-- Légendes des axes -->
+                <text x="200" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">
+                Temps (t)
+                </text>
+                <text x="20" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333" transform="rotate(-90, 20, 150)">
+                Concentration (C)
+                </text>
+            
+                <!-- Courbe des réactifs -->
+                <path d="M50 250 Q150 200, 350 100" fill="none" stroke="#ff5733" stroke-width="2" />
+                <text x="300" y="160" font-family="Arial, sans-serif" font-size="10" fill="#ff5733">
+                Réactifs
+                </text>
+            
+                <!-- Courbe des produits -->
+                <path d="M50 250 Q150 150, 350 80" fill="none" stroke="#33c3ff" stroke-width="2" />
+                <text x="200" y="90" font-family="Arial, sans-serif" font-size="10" fill="#33c3ff">
+                Produits
+                </text>
+            
+                <!-- Catalyseur -->
+                <circle cx="200" cy="200" r="5" fill="#90ee90" />
+                <text x="210" y="200" font-family="Arial, sans-serif" font-size="10" fill="#333">
+                Catalyseur
+                </text>
+            
+                <!-- Points de mesure -->
+                <circle cx="100" cy="220" r="3" fill="#333" />
+                <circle cx="150" cy="190" r="3" fill="#333" />
+                <circle cx="250" cy="130" r="3" fill="#333" />
+                <circle cx="300" cy="110" r="3" fill="#333" />
+            </svg>
+        </div>
+        <div class="section-title">1. Cinétique Chimique</div>
+        <p>La cinétique chimique étudie la vitesse des réactions et les facteurs qui influencent cette vitesse. La vitesse est souvent modélisée par :</p>
+        <p><strong>v = k[A][B]</strong></p>
+
+        <div class="section-title">2. Mécanisme de Réaction</div>
+        <p>Le mécanisme d'une réaction chimique décrit les étapes élémentaires par lesquelles les réactifs sont convertis en produits.</p>
+
+        <div class="section-title">3. Loi de Rate</div>
+        <p>La loi de rate décrit la relation entre la vitesse de réaction et les concentrations des réactifs. Un exemple est la loi de vitesse du premier ordre :</p>
+        <p><strong>v = k[A]</strong></p>
+    </div>
+
+    <!-- Synthèse Organique -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Synthèse Organique</h3>
+            <p>Stratégies pour créer des composés organiques.</p>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 150" width="100%" height="auto" style="max-width: 400px;">
+                <!-- Réactions de Substitution -->
+                <g>
+                <circle cx="50" cy="60" r="40" fill="#ffcccb" />
+                <text x="50" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">
+                    Substitution
+                </text>
+                <text x="50" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">
+                    A + B → C + D
+                </text>
+                </g>
+            
+                <!-- Réactions d'Addition -->
+                <g>
+                <circle cx="200" cy="60" r="40" fill="#add8e6" />
+                <text x="200" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">
+                    Addition
+                </text>
+                <text x="200" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">
+                    A + B → AB
+                </text>
+                </g>
+            
+                <!-- Réactions de Polymérisation -->
+                <g>
+                <rect x="85" y="90" width="80" height="50" fill="#90ee90" rx="10" ry="10" />
+                <text x="125" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">
+                    Polymérisation
+                </text>
+                <text x="125" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">
+                    nA → (A)n
+                </text>
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Réactions Chimiques en Profondeur -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Réactions Chimiques en Profondeur</h3>
+            <p>Approfondissement des modèles des réactions chimiques.</p>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="auto" style="max-width: 400px;">
+                <!-- Fond -->
+                <rect width="100%" height="100%" fill="#f9f9f9" />
+            
+                <!-- Titre -->
+                <text x="50%" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#333">
+                Prédire l'Évolution Chimique
+                </text>
+            
+                <!-- Axes -->
+                <line x1="50" y1="250" x2="350" y2="250" stroke="#333" stroke-width="2" />
+                <line x1="50" y1="250" x2="50" y2="50" stroke="#333" stroke-width="2" />
+            
+                <!-- Légendes des axes -->
+                <text x="200" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">
+                Temps (t)
+                </text>
+                <text x="20" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333" transform="rotate(-90, 20, 150)">
+                Concentration (C)
+                </text>
+            
+                <!-- Courbe des réactifs -->
+                <path d="M50 250 Q150 200, 350 100" fill="none" stroke="#ff5733" stroke-width="2" />
+                <text x="300" y="150" font-family="Arial, sans-serif" font-size="10" fill="#ff5733">
+                Réactifs
+                </text>
+            
+                <!-- Courbe des produits -->
+                <path d="M50 250 Q150 150, 350 80" fill="none" stroke="#33c3ff" stroke-width="2" />
+                <text x="260" y="90" font-family="Arial, sans-serif" font-size="10" fill="#33c3ff">
+                Produits
+                </text>
+            
+                <!-- État initial -->
+                <circle cx="50" cy="250" r="5" fill="#333" />
+                <text x="60" y="250" font-family="Arial, sans-serif" font-size="10" fill="#333">
+                État initial
+                </text>
+            
+                <!-- État final -->
+                <circle cx="350" cy="80" r="5" fill="#333" />
+                <text x="360" y="160" font-family="Arial, sans-serif" font-size="10" fill="#333">
+                État final
+                </text>
+            </svg>
+        </div>
+        <div class="section-title">1. Modèle de Collision</div>
+        <p>Ce modèle explique que les molécules doivent entrer en collision avec une certaine énergie pour réagir. La fréquence des collisions est donnée par :</p>
+        <p><strong>z = A * exp(-Ea / RT)</strong></p>
+
+        <div class="section-title">2. Modèle de Transition</div>
+        <p>Le modèle de transition suppose que les molécules passent par un état de transition avant de se transformer en produits.</p>
+    </div>
+
+    <!-- Contrôler les Réactions -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Contrôler les Réactions</h3>
+            <p>Influence des conditions externes sur le sens d'une réaction chimique.</p>
+        </div>
+        <div class="section-title">1. Température et Réactions</div>
+        <p>La température affecte la vitesse des réactions et l'atteinte de l'équilibre. Selon la loi d'Arrhenius, la relation est :</p>
+        <p><strong>k = A * exp(-Ea / RT)</strong></p>
+
+        <div class="section-title">2. Effet de la Concentration</div>
+        <p>La concentration des réactifs influence la vitesse de réaction. Une augmentation de la concentration augmente généralement la vitesse de réaction.</p>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="auto" style="max-width: 400px;">
+                <!-- Fond adaptable -->
+                <rect width="100%" height="100%" fill="transparent"/>
+              
+                <!-- Réactifs -->
+                <text x="50" y="110" font-size="14" fill="currentColor">Réactifs</text>
+                <rect x="45" y="85" width="60" height="40" fill="blue" fill-opacity="0.5"/>
+                
+                <!-- Flèche vers les Produits -->
+                <line x1="120" y1="100" x2="180" y2="100" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                
+                <!-- Produits -->
+                <text x="210" y="110" font-size="14" fill="currentColor">Produits</text>
+                <rect x="205" y="85" width="65" height="40" fill="green" fill-opacity="0.5"/>
+                
+                <!-- Flèche d'équilibre -->
+                <line x1="180" y1="110" x2="120" y2="110" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                
+                <!-- Perturbation -->
+                <text x="50" y="185" font-size="14" fill="currentColor">Perturbation -> Nouvel équilibre</text>
+            </svg>
+        </div>
+    </div>
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Bilan d'Énergie</h3>
+            <p>Application du premier principe de la thermodynamique.</p>
+        </div>
+        <div class="recap"><iframe width="560" height="315" src="https://www.youtube.com/embed/6QSeQhN-OAc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="auto" style="max-width: 400px;">
+                <!-- Fond adaptable -->
+                <rect width="100%" height="100%" fill="transparent"/>
+            
+                <!-- Titre -->
+                <text x="200" y="20" font-size="16" text-anchor="middle" fill="currentColor">Bilan d'Énergie simplifié</text>
+            
+                <!-- Système -->
+                <rect x="150" y="80" width="100" height="100" fill="blue" fill-opacity="0.3" stroke="blue" stroke-width="2"/>
+                <text x="200" y="130" font-size="14" text-anchor="middle" fill="currentColor">Système</text>
+            
+                <!-- Transferts d'énergie -->
+                <!-- Travail -->
+                <line x1="120" y1="130" x2="150" y2="130" stroke="orange" stroke-width="2"/>
+                <text x="75" y="130" font-size="12" text-anchor="middle" fill="orange">Travail (W)</text>
+            
+                <!-- Chaleur -->
+                <line x1="250" y1="130" x2="280" y2="130" stroke="red" stroke-width="2"/>
+                <text x="325" y="130" font-size="12" text-anchor="middle" fill="red">Chaleur (Q)</text>
+            
+                <!-- Variation d'énergie interne -->
+                <line x1="200" y1="180" x2="200" y2="200" stroke="green" stroke-width="2"/>
+                <text x="200" y="220" font-size="12" text-anchor="middle" fill="green">ΔU</text>
+            
+                <!-- Équation -->
+                <text x="200" y="50" font-size="14" text-anchor="middle" fill="currentColor">
+                ΔU = Q - W
+                </text>
+            </svg>
+        </div>
+        <div class="section-title">1. Premier Principe de la Thermodynamique</div>
+        <p>Le premier principe de la thermodynamique stipule que l'énergie ne peut être ni créée ni détruite, mais simplement transformée. Il est formulé par :</p>
+        <p><strong>ΔU = Q - W</strong></p>
+        <p>Où :</p>
+        <ul>
+            <li>ΔU : variation de l'énergie interne du système</li>
+            <li>Q : chaleur ajoutée au système</li>
+            <li>W : travail effectué par le système</li>
+        </ul>
+
+        <div class="section-title">2. Application à un Système Thermodynamique</div>
+        <p>Pour un système fermé, l'énergie interne peut changer en fonction de la chaleur et du travail échangés. Ce principe est fondamental pour analyser les moteurs thermiques, les réfrigérateurs et autres systèmes énergétiques.</p>
+
+        <div class="section-title">3. Exemple d'Application</div>
+        <p>Si un gaz parfait est comprimé adiabatiquement (sans échange de chaleur), le travail effectué sur le gaz modifie son énergie interne :</p>
+        <p><strong>ΔU = -W</strong></p>
+        <p>Dans ce cas, la chaleur Q est nulle, et toute l'énergie se transforme en travail.</p>
+    </div>
+
+    <!-- Les Gaz Parfaits -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Les Gaz Parfaits</h3>
+            <p>Modélisation d'un gaz idéal et ses propriétés thermodynamiques.</p>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="100%" height="auto" style="max-width: 400px;">
+                <!-- Fond adaptable -->
+                <rect width="100%" height="100%" fill="transparent"/>
+              
+                <!-- Titre -->
+                <text x="250" y="30" font-size="18" text-anchor="middle" fill="currentColor">Definition generale:</text>
+              
+                <!-- Équation des gaz parfaits -->
+                <text x="250" y="60" font-size="16" text-anchor="middle" fill="currentColor">PV = nRT</text>
+              
+                <!-- Section 1 : Propriétés des gaz parfaits -->
+                <rect x="20" y="80" width="200" height="100" fill="blue" fill-opacity="0.1" stroke="blue" stroke-width="1"/>
+                <text x="120" y="100" font-size="14" text-anchor="middle" fill="blue">Propriétés</text>
+                <text x="120" y="120" font-size="12" text-anchor="middle" fill="currentColor">
+                  Molécules sans volume propre
+                </text>
+                <text x="120" y="140" font-size="12" text-anchor="middle" fill="currentColor">
+                  Interactions négligeables
+                </text>
+                <text x="120" y="160" font-size="12" text-anchor="middle" fill="currentColor">
+                  Collisions élastiques
+                </text>
+              
+                <!-- Section 2 : Relation P, V, T -->
+                <rect x="280" y="80" width="200" height="100" fill="green" fill-opacity="0.1" stroke="green" stroke-width="1"/>
+                <text x="380" y="100" font-size="14" text-anchor="middle" fill="green">Relations P, V, T</text>
+                <text x="380" y="120" font-size="12" text-anchor="middle" fill="currentColor">
+                  P ∝ T (V constant)
+                </text>
+                <text x="380" y="140" font-size="12" text-anchor="middle" fill="currentColor">
+                  V ∝ 1/P (T constant)
+                </text>
+                <text x="380" y="160" font-size="12" text-anchor="middle" fill="currentColor">
+                  V ∝ T (P constant)
+                </text>
+              
+                <!-- Section 3 : Lois de Boyle et Charles -->
+                <rect x="20" y="220" width="460" height="100" fill="orange" fill-opacity="0.1" stroke="orange" stroke-width="1"/>
+                <text x="250" y="240" font-size="14" text-anchor="middle" fill="orange">Lois de Boyle et Charles</text>
+                <text x="250" y="260" font-size="12" text-anchor="middle" fill="currentColor">
+                  Loi de Boyle : P * V = constant (T constant)
+                </text>
+                <text x="250" y="280" font-size="12" text-anchor="middle" fill="currentColor">
+                  Loi de Charles : V ∝ T (P constant)
+                </text>
+              
+                <!-- Flèches reliant les sections -->
+                <line x1="230" y1="130" x2="260" y2="130" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="250" y1="160" x2="250" y2="200" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+              
+                <!-- Définition des flèches -->
+            </svg>
+        </div>
+        <div class="section-title">1. Loi des Gaz Parfaits</div>
+        <p>Les gaz parfaits obéissent à l'équation d'état :</p>
+        <p><strong>PV = nRT</strong></p>
+        <p>Où :</p>
+        <ul>
+            <li>P : pression du gaz</li>
+            <li>V : volume du gaz</li>
+            <li>n : nombre de moles</li>
+            <li>R : constante des gaz parfaits (8,314 J/mol·K)</li>
+            <li>T : température en Kelvin</li>
+        </ul>
+
+        <div class="section-title">2. Propriétés des Gaz Parfaits</div>
+        <p>Les gaz parfaits sont caractérisés par les propriétés suivantes :</p>
+        <ul>
+            <li>Les molécules n'ont pas de volume propre.</li>
+            <li>Les interactions entre les molécules sont négligeables sauf lors des collisions.</li>
+            <li>Les collisions sont parfaitement élastiques.</li>
+        </ul>
+
+        <div class="section-title">3. Relation avec la Température et la Pression</div>
+        <p>Les gaz parfaits montrent une relation linéaire entre la pression et la température à volume constant :</p>
+        <p><strong>P ∝ T</strong></p>
+        <p>De même, à température constante, le volume est inversement proportionnel à la pression :</p>
+        <p><strong>V ∝ 1/P</strong></p>
+
+        <div class="section-title">4. Loi de Boyle et Charles</div>
+        <p>Les deux lois fondamentales pour les gaz parfaits sont :</p>
+        <ul>
+            <li>Loi de Boyle : À température constante, le produit de la pression et du volume est constant (P * V = constant).</li>
+            <li>Loi de Charles : À pression constante, le volume est directement proportionnel à la température (V ∝ T).</li>
+        </ul>
+    </div>
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Phénomènes Ondulatoires</h3>
+            <p>Caractéristiques des ondes et leur comportement.</p>
+        </div>
+        <div class="recap"><iframe width="560" height="315" src="https://www.youtube.com/embed/vASwX6SIfC8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="auto" style="max-width: 600px;">
+                <!-- Fond adaptable -->
+                <rect width="100%" height="100%" fill="transparent"/>
+            
+                <!-- Section 1 : Nature des Ondes -->
+                <rect x="20" y="50" width="260" height="100" fill="blue" fill-opacity="0.1" stroke="blue" stroke-width="1"/>
+                <text x="150" y="70" font-size="14" text-anchor="middle" fill="blue">Nature des Ondes</text>
+                <text x="150" y="90" font-size="12" text-anchor="middle" fill="currentColor">
+                Ondes mécaniques (ex. : son)
+                </text>
+                <text x="150" y="110" font-size="12" text-anchor="middle" fill="currentColor">
+                Ondes électromagnétiques (ex. : lumière)
+                </text>
+                <text x="150" y="130" font-size="12" text-anchor="middle" fill="currentColor">
+                Propagation dans un milieu
+                </text>
+            
+                <!-- Section 2 : Propriétés des Ondes -->
+                <rect x="320" y="50" width="260" height="100" fill="green" fill-opacity="0.1" stroke="green" stroke-width="1"/>
+                <text x="450" y="70" font-size="14" text-anchor="middle" fill="green">Propriétés des Ondes</text>
+                <text x="450" y="90" font-size="12" text-anchor="middle" fill="currentColor">
+                Longueur d'onde (λ)
+                </text>
+                <text x="450" y="110" font-size="12" text-anchor="middle" fill="currentColor">
+                Fréquence (f)
+                </text>
+                <text x="450" y="130" font-size="12" text-anchor="middle" fill="currentColor">
+                Amplitude (A), Vitesse (v)
+                </text>
+            
+                <!-- Section 3 : Comportement des Ondes -->
+                <rect x="20" y="180" width="560" height="150" fill="orange" fill-opacity="0.1" stroke="orange" stroke-width="1"/>
+                <text x="300" y="200" font-size="14" text-anchor="middle" fill="orange">Comportement des Ondes</text>
+                <text x="300" y="220" font-size="12" text-anchor="middle" fill="currentColor">
+                Réflexion : rebond sur une surface
+                </text>
+                <text x="300" y="240" font-size="12" text-anchor="middle" fill="currentColor">
+                Réfraction : changement de direction
+                </text>
+                <text x="300" y="260" font-size="12" text-anchor="middle" fill="currentColor">
+                Diffraction : écartement autour d'obstacles
+                </text>
+            
+                <!-- Flèches reliant les sections -->
+                <line x1="280" y1="100" x2="310" y2="100" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="150" y1="150" x2="150" y2="160" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="450" y1="150" x2="450" y2="160" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+            
+                <!-- Définition des flèches -->
+                <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                </marker>
+                </defs>
+            </svg>
+        </div>
+        <div class="section-title">1. Nature des Ondes</div>
+        <p>Les ondes sont des perturbations qui se propagent dans un milieu. Elles peuvent être classées en deux types principaux :</p>
+        <ul>
+            <li>Les ondes mécaniques (ex. : vagues dans l'eau, ondes sonores).</li>
+            <li>Les ondes électromagnétiques (ex. : lumière, ondes radio).</li>
+        </ul>
+
+        <div class="section-title">2. Propriétés des Ondes</div>
+        <p>Les principales caractéristiques d'une onde sont :</p>
+        <ul>
+            <li><strong>Longueur d'onde (λ)</strong> : distance entre deux points similaires de l'onde.</li>
+            <li><strong>Fréquence (f)</strong> : nombre de cycles par seconde.</li>
+            <li><strong>Amplitude (A)</strong> : hauteur de l'onde, liée à l'énergie transportée.</li>
+            <li><strong>Vitesse de propagation (v)</strong> : vitesse à laquelle l'onde se déplace dans le milieu.</li>
+        </ul>
+
+        <div class="section-title">3. Comportement des Ondes</div>
+        <p>Les ondes peuvent subir différents phénomènes lors de leur propagation :</p>
+        <ul>
+            <li><strong>Réflexion</strong> : lorsque l'onde rebondit sur une surface.</li>
+            <li><strong>Réfraction</strong> : changement de direction de l'onde lorsqu'elle traverse un milieu différent.</li>
+            <li><strong>Diffraction</strong> : écartement des ondes lorsqu'elles rencontrent un obstacle ou une ouverture.</li>
+        </ul>
+    </div>
+
+    <!-- La Lumière et les Photons -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>La Lumière et les Photons</h3>
+            <p>Comprendre la lumière comme un flux de photons.</p>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 500" width="100%" height="auto" style="max-width: 600px;">
+                <!-- Fond adaptable -->
+                <rect width="100%" height="100%" fill="transparent"/>
+            
+                <!-- Titre -->
+                <text x="350" y="30" font-size="18" text-anchor="middle" fill="currentColor">La Lumière et les Photons</text>
+            
+                <!-- Section 1 : Nature de la Lumière -->
+                <rect x="20" y="50" width="300" height="100" fill="blue" fill-opacity="0.1" stroke="blue" stroke-width="1"/>
+                <text x="170" y="70" font-size="14" text-anchor="middle" fill="blue">Nature de la Lumière</text>
+                <text x="170" y="90" font-size="12" text-anchor="middle" fill="currentColor">
+                Onde électromagnétique
+                </text>
+                <text x="170" y="110" font-size="12" text-anchor="middle" fill="currentColor">
+                Flux de photons
+                </text>
+            
+                <!-- Section 2 : Dualité Onde-Particule -->
+                <rect x="380" y="50" width="300" height="100" fill="green" fill-opacity="0.1" stroke="green" stroke-width="1"/>
+                <text x="530" y="70" font-size="14" text-anchor="middle" fill="green">Dualité Onde-Particule</text>
+                <text x="530" y="90" font-size="12" text-anchor="middle" fill="currentColor">
+                Onde : propagation
+                </text>
+                <text x="530" y="110" font-size="12" text-anchor="middle" fill="currentColor">
+                Particule : effet photoélectrique
+                </text>
+            
+                <!-- Section 3 : Propriétés des Photons -->
+                <rect x="20" y="180" width="300" height="100" fill="orange" fill-opacity="0.1" stroke="orange" stroke-width="1"/>
+                <text x="170" y="200" font-size="14" text-anchor="middle" fill="orange">Propriétés des Photons</text>
+                <text x="170" y="220" font-size="12" text-anchor="middle" fill="currentColor">
+                Particules sans masse
+                </text>
+                <text x="170" y="240" font-size="12" text-anchor="middle" fill="currentColor">
+                Énergie : E = h * f
+                </text>
+            
+                <!-- Section 4 : Spectre Électromagnétique -->
+                <rect x="380" y="180" width="300" height="100" fill="purple" fill-opacity="0.1" stroke="purple" stroke-width="1"/>
+                <text x="530" y="200" font-size="14" text-anchor="middle" fill="purple">Spectre Électromagnétique</text>
+                <text x="530" y="220" font-size="12" text-anchor="middle" fill="currentColor">
+                Ondes radio → Rayons gamma
+                </text>
+                <text x="530" y="240" font-size="12" text-anchor="middle" fill="currentColor">
+                Lumière visible : 400-700 nm
+                </text>
+            
+                <!-- Représentation des ondes électromagnétiques -->
+                <text x="380" y="310" font-size="14" text-anchor="middle" fill="currentColor">Représentation des Ondes Électromagnétiques</text>
+                <!-- Axe de propagation -->
+                <line x1="100" y1="350" x2="600" y2="350" stroke="currentColor" stroke-width="1" stroke-dasharray="5,5"/>
+                <text x="500" y="400" font-size="12" fill="currentColor">Direction de propagation</text>
+            
+                <!-- Champs électriques (en rouge) -->
+                <path d="M100,350 Q150,300 200,350 T300,350 T400,350 T500,350 T600,350" fill="none" stroke="red" stroke-width="2"/>
+                <text x="100" y="300" font-size="12" fill="red">Champ électrique (E)</text>
+            
+                <!-- Champs magnétiques (en bleu) -->
+                <path d="M100,350 Q150,400 200,350 T300,350 T400,350 T500,350 T600,350" fill="none" stroke="blue" stroke-width="2"/>
+                <text x="100" y="400" font-size="12" fill="blue">Champ magnétique (B)</text>
+            
+                <!-- Flèches reliant les sections -->
+                <line x1="320" y1="100" x2="370" y2="100" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="170" y1="150" x2="170" y2="170" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="530" y1="150" x2="530" y2="170" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            </svg>
+        </div>
+        <div class="section-title">1. Nature de la Lumière</div>
+        <p>La lumière est une onde électromagnétique, mais elle peut également être décrite comme un flux de particules appelées photons.</p>
+
+        <div class="section-title">2. Dualité Onde-Particule</div>
+        <p>La lumière présente une dualité onde-particule, ce qui signifie qu'elle se comporte à la fois comme une onde et comme une particule, selon l'expérience menée. Cela est illustré par le phénomène de l'effet photoélectrique, découvert par Einstein.</p>
+
+        <div class="section-title">3. Propriétés des Photons</div>
+        <p>Les photons sont des particules sans masse qui transportent de l'énergie. L'énergie d'un photon est liée à sa fréquence par la formule :</p>
+        <p><strong>E = h * f</strong></p>
+        <p>Où :</p>
+        <ul>
+            <li><strong>E</strong> : énergie du photon</li>
+            <li><strong>h</strong> : constante de Planck (6,626 x 10<sup>-34</sup> J·s)</li>
+            <li><strong>f</strong> : fréquence de la lumière</li>
+        </ul>
+
+        <div class="section-title">4. Spectre Electromagnétique</div>
+        <p>Le spectre électromagnétique est un continuum de différentes longueurs d'onde, comprenant les ondes radio, les micro-ondes, la lumière visible, les rayons X, et les rayons gamma.</p>
+    </div>
+
+    <!-- Systèmes Électriques -->
+    <div class="fiche">
+        <div class="fiche-header">
+            <h3>Systèmes Électriques</h3>
+            <p>Analyse dynamique des circuits électriques.</p>
+        </div>
+
+        <div class="section-title">1. Loi d'Ohm</div>
+        <p>La loi d'Ohm décrit la relation entre la tension (V), le courant (I), et la résistance (R) dans un circuit :</p>
+        <p><strong>V = I * R</strong></p>
+        <p>Où :</p>
+        <ul>
+            <li><strong>V</strong> : tension (Volts)</li>
+            <li><strong>I</strong> : courant (Ampères)</li>
+            <li><strong>R</strong> : résistance (Ohms)</li>
+        </ul>
+
+        <div class="section-title">2. Puissance Électrique</div>
+        <p>La puissance dissipée dans un circuit électrique peut être exprimée par :</p>
+        <p><strong>P = V * I</strong></p>
+        <p>Où P est la puissance (en watts), V la tension et I le courant.</p>
+
+        <div class="section-title">3. Circuits en Série et en Parallèle</div>
+        <p>Les résistances dans un circuit peuvent être connectées de deux manières :</p>
+        <ul>
+            <li><strong>Circuit en série</strong> : La résistance totale est la somme des résistances individuelles :</li>
+            <p><strong>R<sub>totale</sub> = R<sub>1</sub> + R<sub>2</sub> + ...</strong></p>
+            <li><strong>Circuit en parallèle</strong> : L'inverse de la résistance totale est la somme des inverses des résistances :</li>
+            <p><strong>1/R<sub>totale</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + ...</strong></p>
+        </ul>
+
+        <div class="section-title">4. Analyse Dynamique des Circuits</div>
+        <p>Les circuits peuvent être analysés à l'aide des équations différentielles qui décrivent l'évolution du courant et de la tension dans le temps. Cette analyse est particulièrement importante pour les circuits RC (résistance-capacité) et RL (résistance-inductance), où la variation de courant et de tension dépend du temps.</p>
+        <div class="w-100 d-flex justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="auto" style="min-height: 500px;">
+                <!-- Fond adaptable -->
+                <rect width="100%" height="100%" fill="transparent"/>
+              
+                <!-- Titre -->
+                <text x="400" y="30" font-size="18" text-anchor="middle" fill="currentColor">Systèmes Électriques</text>
+              
+                <!-- Section 1 : Loi d'Ohm -->
+                <rect x="50" y="50" width="300" height="100" fill="blue" fill-opacity="0.1" stroke="blue" stroke-width="1"/>
+                <text x="200" y="70" font-size="16" text-anchor="middle" fill="blue">Loi d'Ohm</text>
+                <text x="200" y="100" font-size="12" text-anchor="middle" fill="currentColor">V = I * R</text>
+                <text x="200" y="120" font-size="12" text-anchor="middle" fill="currentColor">(Tension = Courant * Résistance)</text>
+              
+                <!-- Section 2 : Puissance Électrique -->
+                <rect x="450" y="50" width="300" height="100" fill="green" fill-opacity="0.1" stroke="green" stroke-width="1"/>
+                <text x="600" y="70" font-size="16" text-anchor="middle" fill="green">Puissance Électrique</text>
+                <text x="600" y="100" font-size="12" text-anchor="middle" fill="currentColor">P = V * I</text>
+                <text x="600" y="120" font-size="12" text-anchor="middle" fill="currentColor">(Puissance = Tension * Courant)</text>
+              
+                <!-- Section 3 : Circuits en Série -->
+                <rect x="50" y="200" width="300" height="150" fill="orange" fill-opacity="0.1" stroke="orange" stroke-width="1"/>
+                <text x="200" y="220" font-size="16" text-anchor="middle" fill="orange">Circuits en Série</text>
+                <!-- Série Illustration -->
+                <line x1="100" y1="270" x2="300" y2="270" stroke="currentColor" stroke-width="2"/>
+                <circle cx="150" cy="270" r="10" fill="currentColor"/>
+                <circle cx="250" cy="270" r="10" fill="currentColor"/>
+                <text x="200" y="310" font-size="12" text-anchor="middle" fill="currentColor">Rtotale = R1 + R2 + ...</text>
+              
+                <!-- Section 4 : Circuits en Parallèle -->
+                <rect x="450" y="200" width="300" height="150" fill="purple" fill-opacity="0.1" stroke="purple" stroke-width="1"/>
+                <text x="600" y="220" font-size="16" text-anchor="middle" fill="purple">Circuits en Parallèle</text>
+                <!-- Parallèle Illustration -->
+                <line x1="500" y1="270" x2="700" y2="270" stroke="currentColor" stroke-width="2"/>
+                <line x1="550" y1="270" x2="550" y2="300" stroke="currentColor" stroke-width="2"/>
+                <line x1="650" y1="270" x2="650" y2="300" stroke="currentColor" stroke-width="2"/>
+                <line x1="550" y1="300" x2="650" y2="300" stroke="currentColor" stroke-width="2"/>
+                <text x="600" y="330" font-size="12" text-anchor="middle" fill="currentColor">1/Rtotale = 1/R1 + 1/R2 + ...</text>
+              
+                <!-- Section 5 : Analyse Dynamique -->
+                <rect x="200" y="400" width="400" height="150" fill="red" fill-opacity="0.1" stroke="red" stroke-width="1"/>
+                <text x="400" y="420" font-size="16" text-anchor="middle" fill="red">Analyse Dynamique des Circuits</text>
+                <text x="400" y="450" font-size="12" text-anchor="middle" fill="currentColor">Équations différentielles (RC et RL)</text>
+                <text x="400" y="470" font-size="12" text-anchor="middle" fill="currentColor">RC : V(t) = V0 * e^(-t/RC)</text>
+                <text x="400" y="490" font-size="12" text-anchor="middle" fill="currentColor">RL : I(t) = I0 * e^(-t/LR)</text>
+                <!-- Illustration RC -->
+                <line x1="250" y1="520" x2="550" y2="520" stroke="currentColor" stroke-width="2"/>
+                <circle cx="300" cy="520" r="10" fill="currentColor"/>
+                <rect x="450" y="510" width="20" height="20" fill="currentColor"/>
+                <text x="320" y="540" font-size="12" fill="currentColor">R</text>
+                <text x="470" y="540" font-size="12" fill="currentColor">C</text>
+              
+                <!-- Flèches reliant les sections -->
+                <line x1="350" y1="100" x2="440" y2="100" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="200" y1="150" x2="200" y2="185" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="600" y1="150" x2="600" y2="185" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+                <line x1="300" y1="350" x2="300" y2="380" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+              
+            </svg>
+        </div>
+    </div>
+
     <div class="bx container-fluid p-3 bg-secondary bg-opacity-10 text-center">
-        <div class="fiche-header pb-4">Cette fiche est conçue pour la révision de bac 2025 !<br>Les contenus vidéo présentés ne m'appartiennent pas. Cette fiche a pour seul objectif de m'aider la préparation au bac ansi que les concours en maths et Physique Chimie 2025 !<br>Pour les personnes qui utilisent cette fiche notée qu'il regroupe l'essentiel mais n'est en aucun cas complet!</p></div>
+        <div class="fiche-header pb-4">Cette fiche est conçue pour la révision de bac 2025 !<br>Les contenus vidéo présentés ne m'appartiennent pas, les svg qui sont dessiné par moi sont juste des moyens pour m'aider donc sont souvent incomplet ou malfait! Cette fiche a pour seul objectif de m'aider la préparation au bac ansi que les concours en maths et Physique Chimie 2025 !<br>Pour les personnes qui utilisent cette fiche notée qu'il regroupe l'essentiel mais n'est en aucun cas complet!</p></div>
         <p>
         <div class="w-100 d-flex flex-grow-1 justify-content-center align-items-center gap-3"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div></p>
     </div>
