@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philo</title>
+    
+   <!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Boxicons -->
+<link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" id="theme-style" href="./light.css">
+
+<style>
+#readaloud {
+position: fixed;
+bottom: 130px;
+right: 20px;
+font-size: 26px;
+color: var(--text-color);
+background-color: var(--secondary-color);
+padding: 12px;
+border-radius: 50%;
+box-shadow: var(--shadow);
+transition: var(--transition);
+cursor: pointer;
+}
+.recap {
+width: 100%;
+padding: 20px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.recap iframe {
+width: 100%;
+max-width: 600px;
+height: 100%;
+aspect-ratio: 16/9;
+border: none;
+border-radius: 1rem;
+}
+/* Style the container to allow horizontal scrolling */
+.slider-container {
+    width: 100%;
+    overflow-x: auto;              /* Horizontal scrolling */
+    padding: 20px 10px;
+    max-width: 900px;
+}
+
+/* Style the slider itself (the content within the container) */
+.slider {
+    display: flex;
+    gap: 20px;                     /* Space between items */
+    padding: 10px 0;
+    flex-wrap: nowrap;
+}
+
+/* Style each slider item (link) */
+.slider-item {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: var(--radius);  /* Rounded corners */
+    background-color: var(--card-bg);  /* Light gray background */
+    color: var(--text-color);       /* Dark text color */
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover effect for each item */
+.slider-item:hover {
+    background-color: var(--primary-hover);  /* Light blue background on hover */
+    color: var(--bg-color);                  /* White text on hover */
+    transform: translateY(-3px);             /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Subtle shadow on hover */
+}
+
+/* Active state to give a pressed effect when the item is clicked */
+.slider-item:active {
+    transform: translateY(1px);  /* Slightly pressed effect */
+    box-shadow: none;             /* Remove shadow on click */
+}
+
+.search-container {
+display: flex;
+justify-content: center;
+    }
+
+    .search-bar {
+        padding: 10px;
+        width: 250px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        outline: none;
+        transition: var(--transition);
+    }
+
+    .search-bar:focus {
+        border-color: var(--primary-color);
+    }
+@media print {.recap {display: none;}}
+</style>
+</head>
+<body id="fiche-content">
+    <div id="scroll-progress-bar" class="bx"></div>
+    <div id="reading-time" class="bx mb-3"></div>
+    <div id="print" class="bx bx-printer"></div>
+    <div id="theme-toggle" class="bx bx-sun"></div>
+    <div id="prevfiche" class="bx bx-chevron-up"></div>
+    <div id="nextfiche" class="bx bx-chevron-down"></div>
+    <div id="activefichedetails" class="bx bx-file"></div>
+    <div id="readaloud" class="bx bx-user-voice"></div>
+    <div id="prevspeachtext" class="bx"></div>
+    <div class="bx" id="linkurl"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div>
+    <div class="bx m-5"></div>
+    <h1 class="bx text-center w-100">Maths</h1>
+    <div class="search-container bx p-2">
+        <input class="search-bar" type="text" id="search" placeholder="Chercher la fiche...">
+    </div>
+    <div class="bx w-100 d-flex justify-content-center align-items-center">
+        <div class="slider-container">
+            <div class="slider">
+                <a href="#fiche1" class="slider-item">Les Lois de Newton</a>
+            </div>
+        </div>
+    </div><div class="fiche">
+        <div class="fiche-header">
+            <h3>Les Lois de Newton</h3>
+            <p>Comprendre les trois lois du mouvement et leurs applications en mécanique</p>
+        </div>
+    
+        <div class="section-title">1. Première Loi de Newton</div>
+        <p>La première loi de Newton, également appelée principe d'inertie, affirme qu'un objet au repos reste au repos et qu'un objet en mouvement poursuit sa trajectoire à une vitesse constante et en ligne droite, à moins qu'une force nette ne vienne perturber cet état.</p>
+    
+        <div class="highlight">Exemple : Un livre posé sur une table ne bouge pas tant qu'une force n'est pas appliquée.</div>
+    
+        <div class="section-title">2. Deuxième Loi de Newton</div>
+        <p>La deuxième loi de Newton est l'une des équations fondamentales de la dynamique. Elle s'exprime par la formule suivante : 
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <msup>
+                <mo>F</mo>
+            </msup>
+            <mi>=</mi>
+            <mi>&nbsp;m</mi>
+            <mo>.</mo>
+            <mi>a</mi>
+        </math>, où <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mi>F</mi>
+        </math> représente la force nette exercée sur un objet, <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mi>m</mi>
+        </math> sa masse, et <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mi>a</mi>
+        </math> son accélération.</p>
+    
+        <div class="info-point">
+            <strong>Important :</strong> Plus la masse d'un objet est grande, plus il est difficile de modifier sa vitesse (accélération) avec une force donnée.
+        </div>
+    
+        <div class="section-title">3. Troisième Loi de Newton</div>
+        <p>La troisième loi de Newton stipule que : "Pour chaque action, il existe une réaction égale et opposée". Autrement dit, si un objet exerce une force sur un autre, celui-ci réagira avec une force de même intensité mais dans la direction opposée. Cette loi se formule ainsi : 
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mi>F</mi>
+            <sub>
+                <mi>12</mi>
+            </sub>
+            <mo>=</mo>
+            <mo>-</mo>
+            <mi>F</mi>
+            <sub>
+                <mi>21</mi>
+            </sub>
+        </math>, où <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mi>F</mi>
+            <sub>
+                <mi>12</mi>
+            </sub>
+        </math> est la force exercée par l'objet 1 sur l'objet 2, et <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mi>F</mi>
+            <sub>
+                <mi>21</mi>
+            </sub>
+        </math> est la force exercée par l'objet 2 sur l'objet 1.</p>
+    </div>
+    
+    <div class="bx container-fluid p-3 bg-secondary bg-opacity-10 text-center">
+        <div class="fiche-header pb-4">Cette fiche est conçue pour la révision de bac 2025 !<br>Les contenus vidéo présentés ne m'appartiennent pas. Cette fiche a pour seul objectif de m'aider la préparation au bac ansi que les concours en maths et Physique Chimie 2025 !<br>Pour les personnes qui utilisent cette fiche notée qu'il regroupe l'essentiel mais n'est en aucun cas complet!</p></div>
+        <p>
+        <div class="w-100 d-flex flex-grow-1 justify-content-center align-items-center gap-3"><a href="./maths.html">Maths</a> / <a href="./index.html">Philo</a> / <a href="./ph-ch.html">Ph - Ch</a></div></p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
